@@ -27,6 +27,7 @@
     </div>
 
     <div class="row pb-3" id="detail">
+        @if(!empty($articles))
         <div class="col-8">
             <div class="d-flex justify-content-between">
                 <h2>
@@ -51,6 +52,7 @@
                 {{$articles[0]->content}}
             </p>
         </div>
+        @endif
         <div class="col-4">
             <div class="bg-light p-3">
                 <h3>
