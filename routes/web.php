@@ -20,5 +20,10 @@ Route::get('/', function () {
 //Route::get('/home', 'PagesController@actionIndex');
 Route::view('/about', 'about');
 Route::view('/contact', 'contact');
-Route::view('/home', 'home');
+
+Route::get('/home', 'PagesController@index');
+Route::get('/view/{id}', 'PagesController@view');
+Route::get('/create', 'PagesController@create');
 //Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('articles', 'ArticleController');
