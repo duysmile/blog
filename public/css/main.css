@@ -1,0 +1,13 @@
+body{
+    font-family: Raleway;
+    font-weight: 600 !important;
+}
+.btn{
+    font-weight: 600;
+}
+h1{
+    font-family: "Playfair Display";
+}
+h1 a:hover{
+    text-decoration: none;
+}

@@ -7,7 +7,7 @@
     <div class="col-4 text-center">
         <h1>
             <a class="text-dark" href="">
-                LARGE
+                TorF's Blog
             </a>
         </h1>
     </div>
@@ -18,7 +18,7 @@
             </a>
         </div>
         <div>
-            <a class="text-dark btn btn-outline-light border" href="">
+            <a class="text-dark btn btn-outline-light border" href="{{route('signup')}}">
                 Signup
             </a>
         </div>

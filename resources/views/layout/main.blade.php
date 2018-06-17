@@ -1,14 +1,14 @@
 <main>
     <div class="jumbotron d-flex">
-        <div class="row">
+        <div class="row w-100">
             <div class="col-6 text-justify">
                 @if (!empty($articles))
                 <h1>
                     {{$articles[0]->title}}
                 </h1>
-                <p>
-                    {{$articles[0]->sum}}
-                </p>
+                <div class="text-truncate">
+                    {!! $articles[0]->content !!}
+                </div>
                 <a href="#detail">
                     Continue reading ...
                 </a>

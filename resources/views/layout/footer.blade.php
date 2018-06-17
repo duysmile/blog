@@ -2,7 +2,7 @@
     <div class="d-flex justify-content-center flex-row">
         <div class="text-center">
             <p>
-                Blog template built for <a href="">Bootstrap</a> by <a href="">@mdo</a>.
+                Blog by <a href="">Duy Nguyen</a> &copy;{{date("Y", time())}}.
             </p>
             <a href="">
                 Back to top.

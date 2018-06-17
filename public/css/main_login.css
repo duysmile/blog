@@ -1,0 +1,22 @@
+body{
+    font-family: Raleway;
+    font-weight: 600 !important;
+}
+.btn{
+    font-weight: 600;
+}
+h1{
+    font-family: "Playfair Display";
+}
+h1 a:hover{
+    text-decoration: none;
+}
+.input-group-prepend{
+    width: 30%;
+}
+.input-group-text{
+    width: 100%;
+}
+.body__form--width{
+    width: 42%;
+}

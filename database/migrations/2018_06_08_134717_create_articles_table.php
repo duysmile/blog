@@ -17,7 +17,9 @@ class CreateArticlesTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->text('content');
-            $table->integer('id_author')->default('1');
+            $table->integer('id_author');
+            $table->integer('views')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
