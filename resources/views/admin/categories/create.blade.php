@@ -2,19 +2,19 @@
 @section('title', 'Create Category')
 
 @section('content')
-    <div class="row pt-3 pb-3">
-        <div class="col-12">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div><br />
-            @endif
-        </div>
-        <form class="col-12" method="post" action="{{route('categories.store')}}">
+    <div class="d-flex align-items-center justify-content-center">
+        <form class="p-3 m-3 w-50 bg-light" method="post" action="{{route('categories.store')}}">
+            <div>
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div><br />
+                @endif
+            </div>
             {{csrf_field()}}
             <div class="form-group">
                 <label for="name">Name</label>

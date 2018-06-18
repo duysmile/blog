@@ -1,4 +1,5 @@
 @extends('layout_admin.master')
+@section('title', 'Category')
 @section('content')
     <div class="row pt-2">
         @if($message = Session::get('success'))

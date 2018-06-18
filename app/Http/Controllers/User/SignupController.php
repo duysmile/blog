@@ -25,8 +25,8 @@ class SignupController extends Controller
         $verifyUser = VerifyUser::where('token', $token)->first();
         if(isset($verifyUser)){
             $user = $verifyUser->user;
-            if(!$user->status){
-                $verifyUser->user->status = true;
+            if(!$user->verify){
+                $verifyUser->user->verify = true;
                 $verifyUser->user->save();
                 $status = "Your email is verified. You can now login.";
             }

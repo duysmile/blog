@@ -33,4 +33,5 @@ Route::prefix('admin')->group(function (){
     Route::get('/logout', 'Admin\HomeController@logout')->name('logout');
     Route::resource('articles', 'Admin\ArticleController');
     Route::resource('categories', 'Admin\CategoryController');
+    Route::resource('users', 'Admin\UserController');
 });

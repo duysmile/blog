@@ -21,6 +21,7 @@ class UsersTableSeeder extends Seeder
         $user_editor->email = 'duy210697@gmail.com';
         $user_editor->password = bcrypt('123456');
         $user_editor->status = true;
+        $user_editor->verify = true;
         $user_editor->save();
         $user_editor->roles()->attach($role_editor);
 
@@ -29,6 +30,7 @@ class UsersTableSeeder extends Seeder
         $user_admin->email = 'bin210697@gmail.com';
         $user_admin->password = bcrypt('123456');
         $user_admin->status = true;
+        $user_admin->verify = true;
         $user_admin->save();
         $user_admin->roles()->attach($role_admin);
     }

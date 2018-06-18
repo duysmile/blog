@@ -12,7 +12,7 @@
                 <a class="nav-link" href="{{URL::to('admin/categories')}}">Category</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">User</a>
+                <a class="nav-link" href="{{route('users.index')}}">User</a>
             </li>
         @endif
     </ul>

@@ -1,3 +1,3 @@
-@extends('layout_admin/master')
+@extends('layout_admin.master')
 @section('title', 'Home')
 

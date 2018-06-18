@@ -33,6 +33,11 @@ class User extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
+    public static function getUsers(){
+        $users = User::where('verify', true)->select('id', 'name', 'email', 'status')->get();
+        return $users;
+    }
+
     public static function saveUser($request){
         $user = User::create([
             'name' => $request['name'],
@@ -43,10 +48,44 @@ class User extends Authenticatable implements JWTSubject
             'user_id' => $user->id,
             'token' => str_random(40),
         ]);
-        $user->roles()->attach(Role::where('name', 'editor')->first());
+        if(isset($request['role'])){
+            $user->roles()->attach(Role::where('role_code', $request['role'])->first());
+        }
+        else{
+            $user->roles()->attach(Role::where('name', 'editor')->first());
+        }
         Mail::to($user->email)->send(new VerifyMail($user));
         return true;
     }
+    public static function updateUser($id, $request){
+
+        $user = User::find($id);
+        $user->roles()->detach();
+        $user->roles()->attach(Role::where('role_code', $request['role'])->first());
+
+        if($request['status'] == null){
+            $request['status'] = false;
+        }
+//        var_dump($request['status']);
+//        die();
+        if($request['password'] != null){
+            $request->validate([
+                'password' => 'min:6',
+            ]);
+            foreach($request->only('name', 'email', 'password', 'status') as $key => $value){
+                if($key == "password"){
+                    $user[$key] = bcrypt($value);
+                }
+                else{
+                    $user[$key] = $value;
+                }
+            }
+            return $user->save();
+        }
+        foreach($request->only('name', 'email', 'status') as $key => $value){
+            $user[$key] = $value;
+        }
+        return $user->save();}
 
     public function article(){
         return $this->hasOne('App\Article', 'id_author', 'id');

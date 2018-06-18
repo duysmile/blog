@@ -21,7 +21,7 @@ class CategoryController extends Controller
     }
     public function store(StoreCategory $request){
         Category::saveCategory($request);
-        return redirect('admin/categories');
+        return redirect('admin/categories')->with('success', 'Create category successfully!');
     }
     public function edit($categoryId){
         $category = Category::find($categoryId);
@@ -34,9 +34,6 @@ class CategoryController extends Controller
     public function update(StoreCategory $category, $id){
         Category::updateCategory($category, $id);
         return redirect('admin/categories')->with("success", "Update successfully!");
-    }
-    public function show(){
-        return view('admin/categories/show');
     }
     public function destroy($categoryId){
         $category = Category::find($categoryId);
