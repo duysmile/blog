@@ -19,6 +19,7 @@ class Article extends Model
             $article[$key] = $value;
         }
         $article['id_author'] = Auth::user()->id;
+        $article->categories()->attach(Category::whereIn('id', $request->only('category'))->get());
         return $article->save();
     }
     public function author(){

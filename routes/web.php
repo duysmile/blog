@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', 'User\HomeController@index')->name('home');
 //Route::get('/home', 'PagesController@actionIndex');
 //Route::view('/about', 'about');
@@ -35,3 +36,7 @@ Route::prefix('admin')->group(function (){
     Route::resource('categories', 'Admin\CategoryController');
     Route::resource('users', 'Admin\UserController');
 });
+
+//Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['web', 'auth']], function () {
+//    Lfm::routes();
+//});

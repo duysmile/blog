@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Article;
+use App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreArticle;
 use Illuminate\Http\Request;
@@ -46,7 +47,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('admin.articles.create');
+        $categories = Category::getCategory();
+        return view('admin.articles.create', compact('categories'));
     }
 
     /**
@@ -74,7 +76,6 @@ class ArticleController extends Controller
         $article->id_author = Article::find($id)->author;
         return view('articles.show', compact('article'));
     }
-
     /**
      * Show the form for editing the specified resource.
      *

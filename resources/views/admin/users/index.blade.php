@@ -1,6 +1,9 @@
 @extends('layout_admin.master')
 @section('title', 'User')
 @section('content')
+    <?php
+        $id = 0;
+    ?>
     <div class="row pt-2">
         @if($message = Session::get('success'))
             <div class="alert alert-success col-sm-12">
@@ -57,13 +60,36 @@
                     <a href="{{route('users.edit', $user->id)}}" class="btn btn-primary">
                         <i class="fa fa-edit"></i>
                     </a>
-                    <form class="d-inline" method="post" action="{{route('users.destroy', $user->id)}}">
-                        {{csrf_field()}}
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button class="btn btn-danger">
-                            <i class="fa fa-trash"></i>
-                        </button>
-                    </form>
+                    <a href="" class="btn btn-danger" data-toggle="modal", data-target="#confirm{{$user->id}}">
+                        <i class="fa fa-trash"></i>
+                    </a>
+
+                </div>
+
+                <div class="modal fade" id="confirm{{$user->id}}">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <p class="modal-title text-dark">Confirm Delete</p>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="d-inline" method="post" action="{{route('users.destroy', $user->id)}}">
+                                    {{csrf_field()}}
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <p class="text-dark">
+                                        Are you sure to delete this?
+                                    </p>
+                                    <button type="submit" class="btn btn-danger">
+                                        Delete
+                                    </button>
+                                    <button type="button" data-dismiss="modal" class="btn btn-primary">
+                                        Cancel
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </li>
         @endforeach
