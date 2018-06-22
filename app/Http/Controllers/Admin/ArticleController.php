@@ -6,6 +6,7 @@ use App\Article;
 use App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreArticle;
+use App\Http\Requests\StoreImage;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -59,6 +60,8 @@ class ArticleController extends Controller
      */
     public function store(StoreArticle $request)
     {
+        $thumbnail = new StoreImage(['image' => $request->thumbnail]);
+
         Article::saveArticle($request);
 
         return redirect('admin/articles')->with('success', 'Create successfully');

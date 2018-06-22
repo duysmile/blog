@@ -16,6 +16,7 @@ class ArticlesTableSeeder extends Seeder
             \App\Article::create([
                'title' => $faker->sentence($words = 10, $varWords = true),
                 'content' => $faker->paragraph($sentences = 10, $varSentences = true),
+                'summary' => $faker->paragraph($sentences = 2, $varSentences = true),
                 'id_author' => 1
             ]);
         }

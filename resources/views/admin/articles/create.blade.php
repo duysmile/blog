@@ -14,7 +14,7 @@
                 </div><br />
             @endif
         </div>
-        <form class="col-12" method="post" action="{{route('articles.store')}}">
+        <form class="col-12" method="post" action="{{route('articles.store')}}" enctype="multipart/form-data">
             {{csrf_field()}}
             <div class="row">
                 <div class="col-9">
@@ -92,6 +92,34 @@
                             </div>
                             @endif
                         @endforeach
+                    </div>
+                    <hr>
+                    <div>
+                        <label for="">
+                            Thumbnail
+                        </label>
+                        <input type="file" class="form-control-file" id="thumbnail" name="thumbnail">
+
+                        <img src="" alt="" id="imgThumbnail" class="w-100 p-2 border mt-2 d-none">
+                        {{--preview image--}}
+                        <script>
+                            function readUrl(input){
+                                if(input.files && input.files[0]){
+                                    var reader = new FileReader();
+                                    reader.onload = function (e) {
+                                        $('#imgThumbnail').attr('src', e.target.result);
+                                    }
+
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+
+                            $("#thumbnail").change(function(){
+                                $('#imgThumbnail').removeClass('d-none');
+                                readUrl(this);
+                            })
+                        </script>
+                        {{--end preview--}}
                     </div>
                 </div>
             </div>
