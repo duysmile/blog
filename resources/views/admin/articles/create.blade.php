@@ -20,13 +20,13 @@
                 <div class="col-9">
                     <div class="form-group">
                         <label for="title">Title</label>
-                        <input type="text" class="form-control" id="title" name="title">
+                        <input type="text" class="form-control" id="title" name="title" required>
                     </div>
                     <script src="{{asset('node_modules/tinymce/tinymce.min.js')}}">
                     </script>
                     <div class="form-group">
                         <label for="content">Content:</label>
-                        <textarea rows="5" class="form-control" id="content" name="content">
+                        <textarea rows="7" class="form-control" id="content" name="content" required>
 
                         </textarea>
                         <script type="text/javascript">
@@ -85,7 +85,7 @@
                             <div id="category{{$categoryParent->id}}" class="collapse">
                                 @foreach($categoryParent->child as $child)
                                 <div class="ml-3 form-check">
-                                    <input type="checkbox" class="form-check-input" name="category" value="{{$child->id}}">
+                                    <input type="checkbox" class="form-check-input" name="category" value="{{$child->id}}" required>
                                     <label class="form-check-label">{{$child->name}}</label>
                                 </div>
                                 @endforeach
@@ -96,9 +96,24 @@
                     <hr>
                     <div>
                         <label for="">
+                            Time public
+                        </label>
+                        <input type="text" class="form-control" id="datetimepicker" name="time_public" required>
+                        <script>
+                            jQuery('#datetimepicker').datetimepicker({
+                                format:'H:i d.m.Y',
+                                minDate:'0',
+                                maxDate:'+1970/02/02', //a month later
+                                defaultDate:new Date(),
+                            });
+                        </script>
+                    </div>
+                    <hr>
+                    <div>
+                        <label for="">
                             Thumbnail
                         </label>
-                        <input type="file" class="form-control-file" id="thumbnail" name="thumbnail">
+                        <input type="file" class="form-control-file" id="thumbnail" name="thumbnail" required>
 
                         <img src="" alt="" id="imgThumbnail" class="w-100 p-2 border mt-2 d-none">
                         {{--preview image--}}

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreArticle extends FormRequest
+class UpdateArticle extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,6 @@ class StoreArticle extends FormRequest
         return [
             'title' => 'bail|required|string|max:256',
             'content' => 'required',
-            'thumbnail' => 'required',
             'time_public' => 'required',
         ];
     }

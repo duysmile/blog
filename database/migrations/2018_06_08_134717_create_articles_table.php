@@ -21,6 +21,7 @@ class CreateArticlesTable extends Migration
             $table->integer('id_author');
             $table->integer('id_status')->default(0);
             $table->integer('views')->default(0);
+            $table->dateTime('time_public');
             $table->softDeletes();
             $table->timestamps();
         });

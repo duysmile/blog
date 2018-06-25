@@ -7,7 +7,9 @@ use App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreArticle;
 use App\Http\Requests\StoreImage;
+use App\Http\Requests\UpdateArticle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -30,10 +32,7 @@ class ArticleController extends Controller
 //            $articles = Article::onlyTrashed()->latest()->paginate(3);
 //            to undelete article use
 //            $articles->restore();
-            $articles = Article::latest()->paginate(20);
-            foreach($articles as $key => $article){
-                $article['author'] = $article->author->name;
-            }
+        $articles = Article::getArticles();
         }
         else {
             $articles = [];
@@ -62,9 +61,12 @@ class ArticleController extends Controller
     {
         $thumbnail = new StoreImage(['image' => $request->thumbnail]);
 
-        Article::saveArticle($request);
-
-        return redirect('admin/articles')->with('success', 'Create successfully');
+        if(Article::saveArticle($request)){
+            return redirect('admin/articles')->with('success', 'Create successfully');
+        }
+        else{
+            return redirect('admin.articles.create')->with('error', 'Please check your input!');
+        }
     }
 
     /**
@@ -88,7 +90,11 @@ class ArticleController extends Controller
     public function edit($id)
     {
         $article = Article::find($id);
-        return view('articles.edit', compact('article'));
+        if(Auth::user()->id !== $article->author->id){
+            return redirect('admin/articles')->with('error', 'Cannot edit this article because it is not yours.');
+        }
+        $categories = Category::getCategory();
+        return view('admin.articles.edit', ['article' => $article, 'categories' => $categories]);
     }
 
     /**
@@ -98,18 +104,12 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateArticle $request, $id)
     {
-        $article = Article::find($id);
-        $this->validate(request(),[
-           'title' => 'required',
-           'content' => 'required'
-        ]);
-        $article->title = $request->get('title');
-        $article->content = $request->get('content');
-        $article->save();
-//        Article::update($request->all());
-        return redirect('articles')->with("success", "Update successfully!");
+        if(Article::updateArticle($id, $request)){
+            return redirect('admin/articles')->with("success", "Update successfully!");
+        }
+        return redirect('admin/articles')->with("error", "Something wrong!");
     }
 
     /**
@@ -122,6 +122,6 @@ class ArticleController extends Controller
     {
         $article = Article::find($id);
         $article->delete();
-        return redirect('articles')->with('success', 'Delete successfully!');
+        return redirect('admin/articles')->with('success', 'Delete successfully!');
     }
 }

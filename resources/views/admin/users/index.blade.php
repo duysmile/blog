@@ -6,7 +6,7 @@
     ?>
     <div class="row pt-2">
         @if($message = Session::get('success'))
-            <div class="alert alert-success col-sm-12">
+            <div class="alert alert-success col-12">
                 {{$message}}
             </div>
         @endif

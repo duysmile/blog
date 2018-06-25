@@ -20,10 +20,7 @@ class SigninController extends Controller
     public function login(LoginUser $request){
         $credentials = $request->only('email', 'password');
         $user = User::where('email', $request['email'])->first();
-        if($user->status == false){
-            return redirect("/admin")->with(['error' => 'Your account is blocked. Please contact admin to solve this problem.']);
-        }
-        $credentials['status'] = $user->status;
+//        $credentials['status'] = $user->status;
         try{
             if(! $token = Auth::attempt($credentials)){
                 return redirect("/admin")->with(['error' => 'Email or password is incorrect.']);
@@ -32,6 +29,9 @@ class SigninController extends Controller
         catch(AuthenticationException $exception){
             return redirect("/admin")->with(['error' => 'Fail to login. Please try again.']);
 
+        }
+        if($user->status == false){
+            return redirect("/admin")->with(['error' => 'Your account is blocked. Please contact admin to solve this problem.']);
         }
 //        return response()->json([
 //            'success' => true, 'data'=> [ 'token' => $token ]
