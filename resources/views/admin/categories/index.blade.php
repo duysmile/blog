@@ -4,6 +4,7 @@
     <div class="row pt-2">
         @if($message = Session::get('success'))
             <div class="alert alert-success col-sm-12">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
                 {{$message}}
             </div>
         @endif
@@ -18,7 +19,7 @@
         @foreach($categories as $category)
             <li class='row d-flex align-items-center text-center pb-1' data-toggle="collapse" data-target="{{'#category-' . $category->id}}">
                 <div class="col-2">{{$loop->index + 1}}</div>
-                <div class="col-6">{{$category->name}}</div>
+                <div class="col-6">{{$category->name}}({{$category->count_articles}})</div>
                 <div class="col-4">
                     <a class="btn btn-primary" href="{{route('categories.edit', $category->id)}}">
                         <i class="fa fa-edit"></i>
@@ -28,7 +29,7 @@
                             <i class="fa fa-trash"></i>
                         </a>
                     @endif
-                    @component('layout_admin.components.modal')
+                    @component('layout_admin.components.modal_categories')
                         @slot('id')
                             {{$category->id}}
                         @endslot
@@ -42,7 +43,7 @@
                         @foreach($category->child as $child)
                             <li class="row d-flex align-items-center text-center pb-1">
                                 <div class="col-2">{{'c' . ($loop->index + 1)}}</div>
-                                <div class="col-6">{{$child->name}}</div>
+                                <div class="col-6">{{$child->name}}({{$child->articles->count()}})</div>
                                 <div class="col-4">
                                     <a class="btn btn-primary" href="{{route('categories.edit', ['categoryId' => $child->id])}}">
                                         <i class="fa fa-edit"></i>
@@ -50,7 +51,7 @@
                                     <a href="" class="btn btn-danger" data-toggle="modal" data-target="#confirm{{$child->id}}">
                                         <i class="fa fa-trash"></i>
                                     </a>
-                                    @component('layout_admin.components.modal')
+                                    @component('layout_admin.components.modal_categories')
                                         @slot('id')
                                             {{$child->id}}
                                         @endslot
@@ -63,4 +64,5 @@
             </li>
         @endforeach
     </ul>
+
 @endsection

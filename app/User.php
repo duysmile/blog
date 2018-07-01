@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Http\Controllers\FullTextSearch;
 use App\Mail\VerifyMail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -34,7 +35,7 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     public static function getUsers(){
-        $users = User::where('verify', true)->select('id', 'name', 'email', 'status')->get();
+        $users = User::where('verify', true)->select('id', 'name', 'email', 'status')->paginate(20);
         return $users;
     }
 

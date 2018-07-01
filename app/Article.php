@@ -2,12 +2,15 @@
 
 namespace App;
 
+use App\Http\Controllers\FullTextSearch;
 use App\Http\Requests\StoreArticle;
 use App\Http\Requests\UpdateArticle;
 use DateTime;
+use http\Env\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Article extends Model
 {
@@ -15,13 +18,22 @@ class Article extends Model
     protected $fillable = ['title', 'content', 'id_author'];
     protected $table = 'articles';
 
+
     private static function getSummary($content){
         $summary = preg_replace("/<[^>]*>/","", $content);
+        preg_match_all('/\./', $summary,$matches, PREG_OFFSET_CAPTURE);
+        if(count($matches[0]) > 4){
+            $endpoint = $matches[0][3][1] + 1;
+        }
+        else{
+            $endpoint = strlen($summary);
+        }
+        $summary = substr($summary, 0, $endpoint);
         return $summary;
     }
 
-    public static function getArticles(){
-        $articles = Article::latest()->paginate(20);
+    public static function getAuthor($articles)
+    {
         foreach ($articles as $article){
             $article['author'] = $article->author->name;
             $article['status'] = $article->status->name;
@@ -29,6 +41,61 @@ class Article extends Model
         return $articles;
     }
 
+    public static function getArticles(){
+        $articles = Article::latest()->paginate(20);
+        $articles = self::getAuthor($articles);
+        return $articles;
+    }
+
+    public static function getRecentArticles()
+    {
+        $articles = Article::where([
+            'id_status' => 2,
+        ])
+            ->limit(3)
+            ->orderBy('time_public', 'desc')
+            ->get();
+
+        return $articles;
+    }
+
+    public static function getPublicArticles()
+    {
+        $articles = Article::where([
+          'id_status' => 2,
+        ])
+            ->latest()
+            ->paginate(6);
+
+        $articles = self::getAuthor($articles);
+        return $articles;
+    }
+
+    public static function getPopularArticles()
+    {
+        $articles = Article::where([
+            'id_status' => 2,
+        ])
+            ->orderBy('views', 'desc')
+            ->limit(3)
+            ->get();
+
+        return $articles;
+    }
+
+    public static function getTopArticles()
+    {
+        $articles = Article::where([
+            'id_status' => 2,
+        ])
+            ->orderBy('time_public', 'desc')
+            ->orderBy('views', 'desc')
+            ->limit(3)
+            ->get();
+
+        $articles = self::getAuthor($articles);
+        return $articles;
+    }
     public static function saveImageThumbnail($request, $article){
         if($request->hasFile('thumbnail')){
             $fileExtension = $request->thumbnail->getClientOriginalExtension();
@@ -68,7 +135,7 @@ class Article extends Model
         $article = Article::where([
             'id' => $id,
         ])->first();
-        foreach ($request->only('title', 'content') as $key => $value){
+        foreach ($request->only('title', 'content','status') as $key => $value){
             $article[$key] = $value;
         }
         $article['summary'] = Article::getSummary($request['content']);
@@ -82,6 +149,30 @@ class Article extends Model
         $article->categories()->attach(Category::whereIn('id', $request->only('category'))->get());
         Article::saveImageThumbnail($request, $article);
         return true;
+    }
+    public static function updateArticleStatus($request){
+        $request = json_decode($request, true);
+        foreach ($request as $id => $status){
+            $article = Article::where(['id' => $id])->first();
+            $article['id_status'] = $status;
+            $article->save();
+        }
+        return true;
+    }
+
+    public static function searchFullText($request){
+        $query = $request->only('query');
+
+        if($query['query'] == null){
+            return Article::getArticles();
+        }
+        $articles = Article::whereRaw('MATCH(title, content) AGAINST (? IN BOOLEAN MODE)', $query)
+            ->paginate(20);
+        foreach($articles as $article){
+            $article['author'] = $article->author->name;
+            $article['status'] = $article->status->name;
+        }
+        return $articles;
     }
 
     public function author(){

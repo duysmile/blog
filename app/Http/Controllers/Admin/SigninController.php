@@ -6,13 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUser;
 use App\User;
 use Illuminate\Auth\AuthenticationException;
-use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class SigninController extends Controller
 {
+    use AuthenticatesUsers;
+    protected $redirectTo = "/admin/home";
+
+    public function __construct()
+    {
+        return $this->middleware('guest')->except('logout');
+    }
+
     public function index(){
         return view('admin/signin');
     }

@@ -1,12 +1,10 @@
 @extends('layout_admin.master')
 @section('title', 'User')
 @section('content')
-    <?php
-        $id = 0;
-    ?>
     <div class="row pt-2">
         @if($message = Session::get('success'))
             <div class="alert alert-success col-12">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
                 {{$message}}
             </div>
         @endif
@@ -66,7 +64,7 @@
 
                 </div>
 
-                @component('layout_admin.components.modal')
+                @component('layout_admin.components.modal_categories')
                     @slot('id')
                         {{$user->id}}
                     @endslot
@@ -74,4 +72,5 @@
             </li>
         @endforeach
     </ul>
+    {{$users->links('layout_admin.pagination')}}
 @endsection

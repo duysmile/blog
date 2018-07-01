@@ -17,6 +17,7 @@ class ArticlesTableSeeder extends Seeder
                'title' => $faker->sentence($words = 10, $varWords = true),
                 'content' => $faker->paragraph($sentences = 10, $varSentences = true),
                 'summary' => $faker->paragraph($sentences = 2, $varSentences = true),
+                'time_public' => date('Y-m-d', time()),
                 'id_author' => 1
             ]);
         }

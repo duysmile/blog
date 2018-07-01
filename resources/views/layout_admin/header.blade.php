@@ -7,9 +7,6 @@
         <li class="nav-item">
             <a class="nav-link" href="{{ URL::to('admin/articles')}}">Articles</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="">Images</a>
-        </li>
         @if(Auth::user()->hasRole('admin'))
             <li class="nav-item">
                 <a class="nav-link" href="{{URL::to('admin/categories')}}">Category</a>

@@ -1,5 +1,4 @@
 body{
-    font-family: Raleway;
     font-weight: 600 !important;
 }
 .btn{
@@ -10,4 +9,17 @@ h1{
 }
 h1 a:hover{
     text-decoration: none;
+}
+img.main__image--height{
+    height: 12em;
+}
+a{
+    color: #000;
+}
+a:hover{
+    text-decoration: none;
+    color: #000;
+}
+.main__card--height{
+    height: 24em;
 }

@@ -15,7 +15,7 @@ class CreateArticlesTable extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title');
+            $table->string('title')->unique();
             $table->text('content');
             $table->string('summary');
             $table->integer('id_author');
@@ -25,8 +25,9 @@ class CreateArticlesTable extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
-    }
 
+        DB::statement('ALTER TABLE articles ADD FULLTEXT fulltext_index (title, content)');
+    }
     /**
      * Reverse the migrations.
      *

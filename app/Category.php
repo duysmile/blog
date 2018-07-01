@@ -16,6 +16,7 @@ class Category extends Model
     public static function getCategory(){
         $categories = Category::whereNull('id_parent')->get();
         foreach($categories as $category){
+            $category['count_articles'] = $category->articles->count() + Category::countArticlesParent($category->id);
             $category['child'] = Category::where('id_parent', $category->id)->get();
         }
         return $categories;
@@ -29,6 +30,15 @@ class Category extends Model
     public static function updateCategory($request, $id){
         $category = Category::find($id);
         return $category->update($request->only('name', 'id_parent'));
+    }
+
+    public static function countArticlesParent($id){
+        $category = Category::where(['id_parent' => $id])->get();
+        $count = 0;
+        foreach ($category as $item){
+            $count += $item->articles->count();
+        }
+        return $count;
     }
 
     public function articles(){

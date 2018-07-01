@@ -75,7 +75,7 @@
                         @foreach($categories as $categoryParent)
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" name="category" value="{{$categoryParent->id}}"
-                                    @if(in_array($categoryParent, $article->categories))
+                                    @if(is_array($article->categories) && in_array($categoryParent, $article->categories))
                                        checked
                                     @endif
                                 >
@@ -91,7 +91,7 @@
                                     @foreach($categoryParent->child as $child)
                                         <div class="ml-3 form-check">
                                             <input type="checkbox" class="form-check-input" name="category" value="{{$child->id}}" required
-                                               @if(in_array($child, $article->categories))
+                                               @if(is_array($article->categories) && in_array($child, $article->categories))
                                                     checked
                                                @endif
                                             >

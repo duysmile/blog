@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Article;
+use App\ArticleStatus;
 use App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreArticle;
@@ -37,7 +38,16 @@ class ArticleController extends Controller
         else {
             $articles = [];
         }
-        return view('admin.articles.index', ['articles' => $articles]);
+        $statuses = ArticleStatus::all();
+        $categories = Category::all();
+        return view('admin.articles.index', ['articles' => $articles , 'statuses' => $statuses, 'categories' => $categories]);
+    }
+    public function search(Request $query)
+    {
+        $articles = Article::searchFullText($query);
+        $statuses = ArticleStatus::all();
+        $categories = Category::all();
+        return view('admin.articles.index', ['articles' => $articles , 'statuses' => $statuses, 'categories' => $categories]);
     }
 
     /**
@@ -110,6 +120,17 @@ class ArticleController extends Controller
             return redirect('admin/articles')->with("success", "Update successfully!");
         }
         return redirect('admin/articles')->with("error", "Something wrong!");
+    }
+    public function updateStatus(Request $request)
+    {
+        if(Article::updateArticleStatus($request->getContent())){
+            return response()->json([
+                'status' => 'true',
+            ]);
+        }
+        return response()->json([
+            'status' => 'false',
+        ]);
     }
 
     /**

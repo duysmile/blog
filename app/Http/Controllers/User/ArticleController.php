@@ -5,32 +5,25 @@ namespace App\Http\Controllers\User;
 use App\Article;
 use App\Category;
 use App\Http\Controllers\Controller;
-use DeepCopy\f001\A;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class ArticleController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function index()
+    public function index($article)
     {
-        $articles = Article::getPublicArticles();
         $recentArticles = Article::getRecentArticles();
         $popularArticles = Article::getPopularArticles();
         $topArticles = Article::getTopArticles();
         $categories = Category::getCategory();
-        return view('user.home', [
-            'articles' => $articles,
+
+        $index = strpos($article, "-");
+        $id_article = substr($article, $index, strlen($article) - $index);
+        $article_content = Article::where([
+            'id' => $id_article,
+            'id_status' => 2,
+        ])->first();
+
+        return view('user.content_article', [
             'recentArticles' => $recentArticles,
             'popularArticles' => $popularArticles,
             'topArticles' => $topArticles,
