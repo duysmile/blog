@@ -30,5 +30,5 @@ Route::prefix('admin')->group(function (){
 
 Route::prefix('')->group(function(){
     Route::get('/', 'User\HomeController@index')->name('home');
-    Route::get('/{article}', 'User\ArticleController@index')->name('content');
+    Route::get('/{category}/{article}', 'User\ArticleController@index')->name('content');
 });

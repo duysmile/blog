@@ -75,7 +75,7 @@
                         @foreach($categories as $categoryParent)
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" name="category" value="{{$categoryParent->id}}"
-                                    @if(is_array($article->categories) && in_array($categoryParent, $article->categories))
+                                    @if(in_array($categoryParent->name, $article_category))
                                        checked
                                     @endif
                                 >

@@ -120,7 +120,9 @@
         @endforeach
     </div>
 </div>
+    @if(count($articles))
     {{ $articles->links('layout_admin.pagination') }}
+    @endif
 <script>
     var listStatus = {};
     $(document).ready(function () {

@@ -13,6 +13,9 @@ h1 a:hover{
 img.main__image--height{
     height: 12em;
 }
+img.like__image--height{
+    height: 8em;
+}
 a{
     color: #000;
 }

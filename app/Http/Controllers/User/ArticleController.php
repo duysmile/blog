@@ -9,25 +9,27 @@ use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
-    public function index($article)
+    public function index($category, $article)
     {
         $recentArticles = Article::getRecentArticles();
         $popularArticles = Article::getPopularArticles();
-        $topArticles = Article::getTopArticles();
         $categories = Category::getCategory();
 
-        $index = strpos($article, "-");
-        $id_article = substr($article, $index, strlen($article) - $index);
-        $article_content = Article::where([
-            'id' => $id_article,
-            'id_status' => 2,
+//        $index = strpos($article, "-");
+//        $id_article = substr($article, $index, strlen($article) - $index);
+        $article_content = Article::getArticleContent($article);
+        $category_content = Category::where([
+            'name' => $category,
         ])->first();
+
+        $category_content = Category::getArticleBelong($category_content, $article_content);
 
         return view('user.content_article', [
             'recentArticles' => $recentArticles,
             'popularArticles' => $popularArticles,
-            'topArticles' => $topArticles,
+            'article' => $article_content,
             'categories' => $categories,
+            'articles_like' => $category_content
         ]);
     }
 }

@@ -6,6 +6,7 @@ use App\Article;
 use App\Category;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategory;
+use App\Http\Requests\UpdateCategory;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -31,7 +32,10 @@ class CategoryController extends Controller
             'categoryParent' => $categoryParent,
         ]);
     }
-    public function update(StoreCategory $category, $id){
+    public function update(UpdateCategory $category, $id){
+        $this->validate($category,[
+           'name' => 'unique:categories,name,'. $id .',id,deleted_at,NULL',
+        ]);
         Category::updateCategory($category, $id);
         return redirect('admin/categories')->with("success", "Update successfully!");
     }

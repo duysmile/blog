@@ -100,11 +100,12 @@ class ArticleController extends Controller
     public function edit($id)
     {
         $article = Article::find($id);
+        $article_category = Article::getCategories($article);
         if(Auth::user()->id !== $article->author->id){
             return redirect('admin/articles')->with('error', 'Cannot edit this article because it is not yours.');
         }
         $categories = Category::getCategory();
-        return view('admin.articles.edit', ['article' => $article, 'categories' => $categories]);
+        return view('admin.articles.edit', ['article' => $article, 'categories' => $categories, 'article_category' => $article_category]);
     }
 
     /**
@@ -116,6 +117,9 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticle $request, $id)
     {
+        $this->validate($request, [
+            'title' => 'unique:articles,title,'. $id .',id,deleted_at,NULL',
+        ]);
         if(Article::updateArticle($id, $request)){
             return redirect('admin/articles')->with("success", "Update successfully!");
         }

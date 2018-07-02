@@ -41,6 +41,15 @@ class Article extends Model
         return $articles;
     }
 
+    public static function getCategories($article)
+    {
+        $categories = [];
+        foreach($article->categories as $category){
+            $categories[] = $category->name;
+        }
+        return $categories;
+    }
+
     public static function getArticles(){
         $articles = Article::latest()->paginate(20);
         $articles = self::getAuthor($articles);
@@ -146,6 +155,7 @@ class Article extends Model
             return false;
         }
         $article->save();
+        $article->categories()->detach();
         $article->categories()->attach(Category::whereIn('id', $request->only('category'))->get());
         Article::saveImageThumbnail($request, $article);
         return true;
@@ -173,6 +183,13 @@ class Article extends Model
             $article['status'] = $article->status->name;
         }
         return $articles;
+    }
+
+    public static function getArticleContent($article){
+        return Article::where([
+            'title' => $article,
+            'id_status' => 2,
+        ])->first();
     }
 
     public function author(){

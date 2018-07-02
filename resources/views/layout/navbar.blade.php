@@ -4,7 +4,7 @@
             <div class="col-8 navbar navbar-expand ">
                 <ul class="navbar-nav container justify-content-start">
                     <li class="nav-item mr-2">
-                        <a class="nav-link text-dark" href="#">Home</a>
+                        <a class="nav-link text-dark" href="{{route('home')}}">Home</a>
                     </li>
                     @foreach($categories as $category)
                         <li class="nav-item mx-2">

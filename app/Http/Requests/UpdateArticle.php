@@ -24,7 +24,7 @@ class UpdateArticle extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'bail|required|string|max:256|unique:articles,title,{$id},id,deleted_at,NULL',
+            'title' => 'bail|required|string|max:256',
             'content' => 'required',
             'time_public' => 'required',
         ];
