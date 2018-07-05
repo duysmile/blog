@@ -20,14 +20,14 @@
                 <div class="col-9">
                     <div class="form-group">
                         <label for="title">Title</label>
-                        <input type="text" class="form-control" id="title" name="title" required>
+                        <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" required>
                     </div>
                     <script src="{{asset('node_modules/tinymce/tinymce.min.js')}}">
                     </script>
                     <div class="form-group">
                         <label for="content">Content:</label>
                         <textarea rows="7" class="form-control" id="content" name="content" required>
-
+                            {{ old('content') }}
                         </textarea>
                         <script type="text/javascript">
                             var editor_config = {

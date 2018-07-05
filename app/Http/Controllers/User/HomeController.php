@@ -29,12 +29,14 @@ class HomeController extends Controller
         $popularArticles = Article::getPopularArticles();
         $topArticles = Article::getTopArticles();
         $categories = Category::getCategory();
+        $time_public = Article::getTimePublic();
         return view('user.home', [
             'articles' => $articles,
             'recentArticles' => $recentArticles,
             'popularArticles' => $popularArticles,
             'topArticles' => $topArticles,
             'categories' => $categories,
+            'time_public' => $time_public,
         ]);
     }
 }

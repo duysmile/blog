@@ -23,10 +23,15 @@
         <div class="row">
             @foreach($articles_like as $article_like)
             <div class="col-4">
-                <img src="{{$article_like->images[0]->url}}" alt="" class="w-100 like__image--height">
-                <p class="text-center mt-2">
-                    {{$article_like->title}}
-                </p>
+                <a href="{{route('content', [
+                    'category' => count($article_like->categories) ? $article_like->categories[0]->name : 'no-category',
+                    'article' => $article_like->title
+                ])}}">
+                    <img src="{{$article_like->images[0]->url}}" alt="" class="w-100 like__image--height">
+                    <p class="text-center mt-2">
+                        {{$article_like->title}}
+                    </p>
+                </a>
             </div>
             @endforeach
         </div>

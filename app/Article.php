@@ -5,6 +5,7 @@ namespace App;
 use App\Http\Controllers\FullTextSearch;
 use App\Http\Requests\StoreArticle;
 use App\Http\Requests\UpdateArticle;
+use Carbon\Carbon;
 use DateTime;
 use http\Env\Request;
 use Illuminate\Database\Eloquent\Model;
@@ -18,12 +19,22 @@ class Article extends Model
     protected $fillable = ['title', 'content', 'id_author'];
     protected $table = 'articles';
 
+    protected static $num_article_user = [
+        'home_top' => 3,
+        'home_list' => 6,
+        'side_recent' => 3,
+        'side_popular' => 3,
+        'list_category' => 10,
+        'list_search' => 10,
+        'list_archie' => 10,
+        'list_like' => 3,
+    ];
 
     private static function getSummary($content){
         $summary = preg_replace("/<[^>]*>/","", $content);
         preg_match_all('/\./', $summary,$matches, PREG_OFFSET_CAPTURE);
-        if(count($matches[0]) > 4){
-            $endpoint = $matches[0][3][1] + 1;
+        if(count($matches[0]) > 2){
+            $endpoint = $matches[0][1][1] + 1;
         }
         else{
             $endpoint = strlen($summary);
@@ -56,12 +67,19 @@ class Article extends Model
         return $articles;
     }
 
+    public static function getArticlesByAuthor($id_author)
+    {
+        $articles = User::where('id', $id_author)->first()->articles()->paginate(10);
+        $articles = self::getAuthor($articles);
+        return $articles;
+    }
+
     public static function getRecentArticles()
     {
         $articles = Article::where([
             'id_status' => 2,
         ])
-            ->limit(3)
+            ->limit(self::$num_article_user['side_recent'])
             ->orderBy('time_public', 'desc')
             ->get();
 
@@ -74,7 +92,7 @@ class Article extends Model
           'id_status' => 2,
         ])
             ->latest()
-            ->paginate(6);
+            ->paginate(self::$num_article_user['home_list']);
 
         $articles = self::getAuthor($articles);
         return $articles;
@@ -86,7 +104,7 @@ class Article extends Model
             'id_status' => 2,
         ])
             ->orderBy('views', 'desc')
-            ->limit(3)
+            ->limit(self::$num_article_user['side_popular'])
             ->get();
 
         return $articles;
@@ -99,12 +117,13 @@ class Article extends Model
         ])
             ->orderBy('time_public', 'desc')
             ->orderBy('views', 'desc')
-            ->limit(3)
+            ->limit(self::$num_article_user['home_top'])
             ->get();
 
         $articles = self::getAuthor($articles);
         return $articles;
     }
+
     public static function saveImageThumbnail($request, $article){
         if($request->hasFile('thumbnail')){
             $fileExtension = $request->thumbnail->getClientOriginalExtension();
@@ -185,11 +204,104 @@ class Article extends Model
         return $articles;
     }
 
+    public static function searchFullTextUser($request){
+        $query = $request->only('query');
+
+        if($query['query'] == null){
+            return Article::getArticles();
+        }
+        $articles = Article::whereRaw('MATCH(title, content) AGAINST (? IN BOOLEAN MODE)', $query)
+            ->where('id_status', 2)
+            ->paginate(self::$num_article_user['list_search']);
+        foreach($articles as $article){
+            $article['author'] = $article->author->name;
+            $article['status'] = $article->status->name;
+        }
+        return $articles;
+    }
+
+    public static function searchFullTextForAuthor($request, $id){
+        $query = $request->only('query');
+
+        if($query['query'] == null){
+            return Article::getArticles();
+        }
+        $articles = Article::whereRaw('MATCH(title, content) AGAINST (? IN BOOLEAN MODE)', $query)
+            ->where('id_author', $id)
+            ->paginate(20);
+        foreach($articles as $article){
+            $article['author'] = $article->author->name;
+            $article['status'] = $article->status->name;
+        }
+        return $articles;
+    }
+
     public static function getArticleContent($article){
         return Article::where([
             'title' => $article,
             'id_status' => 2,
         ])->first();
+    }
+
+    public static function getTimePublic(){
+        $time_public = Article::selectRaw('date_format(time_public, \'%m-%Y\') as date')
+            ->distinct()
+            ->where([
+                'id_status' => 2,
+            ])
+            ->get(['date']);
+        foreach ($time_public as $time){
+            $time->value = $time->date;
+            $time->date = Carbon::parse($time->time_public)->format('F, Y');
+        }
+        return $time_public;
+    }
+
+    public static function getArticleByTime($time){
+        $time = strtotime('1-'.$time->time);
+        $articles = Article::selectRaw('*')
+            ->where([
+                'id_status' => 2,
+            ])
+            ->whereMonth('time_public', date('m', $time))
+            ->whereYear('time_public', date('Y', $time))
+            ->paginate(self::$num_article_user['list_archie']);
+        $articles = Article::getAuthor($articles);
+        return $articles;
+    }
+
+    public static function getArticleLike($category_content, $article){
+        $category = Category::where([
+            'name' => $category_content,
+        ])->first();
+        if($category != null && $category->articles()->where('id_article', '!=', $article->id)->count() > 0){
+            $list_article = $category->articles()->where('id_article', '!=', $article->id)->latest()->limit(3)->get();
+        }
+        else{
+            $list_article = Article::where([
+                'id_status' => 2,
+
+            ])
+                ->where('id', '!=', $article->id)
+                ->limit(self::$num_article_user['list_like'])
+                ->orderBy('time_public', 'desc')
+                ->get();
+        }
+        return $list_article;
+    }
+
+    public static function getArticleByCategory($category)
+    {
+        $category = Category::where([
+            'name' => $category,
+        ])->first();
+
+        $articles = $category->articles()
+            ->where('id_status', 2)
+            ->orderBy('time_public', 'desc')
+            ->paginate(self::$num_article_user['list_category']);
+        $articles = Article::getAuthor($articles);
+        return $articles;
     }
 
     public function author(){

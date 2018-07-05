@@ -1,25 +1,32 @@
 @extends('layout_admin.master')
 @section('title', 'Articles')
 @section('content')
+    <?php
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+    ?>
     @if($message = Session::get('success'))
         <div class="alert alert-success mt-2">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             {{$message}}
         </div>
     @endif
+    @if($error = Session::get('error'))
+        <div class="alert alert-danger mt-2">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            {{$error}}
+        </div>
+    @endif
     <div class="alert alert-success d-none mt-2" id="success_message">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <button type="button" class="close" id="close_status">&times;</button>
         Update status successfully!
     </div>
 <div class="d-flex justify-content-start">
     <a class="btn btn-default bg-secondary text-light my-3 mr-2" href="{{ route('articles.create') }}">
         Create a new article
     </a>
-
     <a id="applyStatus" class="btn btn-default bg-secondary text-light my-3 mx-2">
         Apply status
     </a>
-
     <form action="{{route('articles.search')}}" class="form-inline my-3 mx-2" method="get">
         {{--<div class="input-group mr-1">--}}
             {{--<select name="category" class="form-control">--}}
@@ -84,13 +91,17 @@
             <div class="col-2">
                 <select name="status" id="{{$article->id}}" class="form-control">
                     @foreach($statuses as $status)
-                        <option value="{{$status->status_code}}"
-                            @if ($status->status_code == $article->id_status)
-                                selected
-                            @endif
-                        >
-                            {{$status->name}}
-                        </option>
+                        @if($status->status_code == 2 && date(strtotime($article->time_public)) > time())
+                        @elseif($status->status_code == 1 && date(strtotime($article->time_public)) < time())
+                        @else
+                            <option value="{{$status->status_code}}"
+                                @if ($status->status_code == $article->id_status)
+                                    selected
+                                @endif
+                            >
+                                {{$status->name}}
+                            </option>
+                        @endif
                     @endforeach
                 </select>
             </div>
@@ -106,7 +117,7 @@
                 <a href="{{route('articles.edit', $article->id)}}">
                     <i class="fa fa-edit"></i>
                 </a>
-                <button type="submit" class="border-0 bg-white text-primary"
+                <button type="submit" class="border-0 bg-white"
                         data-toggle="modal" data-target="#confirm{{$article->id}}">
                     <i class="fa fa-trash"></i>
                 </button>
@@ -147,6 +158,9 @@
                 error: function (error) {
                 }
             });
+        });
+        $('#close_status').click(function(){
+            $('#success_message').addClass('d-none');
         });
     })
 </script>

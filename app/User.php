@@ -88,8 +88,8 @@ class User extends Authenticatable implements JWTSubject
         }
         return $user->save();}
 
-    public function article(){
-        return $this->hasOne('App\Article', 'id_author', 'id');
+    public function articles(){
+        return $this->hasMany('App\Article', 'id_author', 'id');
     }
     public function verifyUser(){
         return $this->hasOne('App\VerifyUser');

@@ -12,6 +12,7 @@
     {{--<link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">--}}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
     <link rel="stylesheet" href="{{asset('css/main.css')}}">
+    <script src="{{asset('node_modules/jquery/dist/jquery.min.js')}}"></script>
 </head>
 <body>
     @include('layout.header')

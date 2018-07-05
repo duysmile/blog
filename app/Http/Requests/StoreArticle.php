@@ -24,7 +24,7 @@ class StoreArticle extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'bail|unique:articles|required|string|max:256',
+            'title' => 'bail|unique:articles,title,{id},id,deleted_at,NULL|required|string|max:256',
             'content' => 'required',
             'thumbnail' => 'required',
             'time_public' => 'required',

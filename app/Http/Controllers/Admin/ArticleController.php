@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreArticle;
 use App\Http\Requests\StoreImage;
 use App\Http\Requests\UpdateArticle;
+use DeepCopy\f008\A;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,6 +17,7 @@ class ArticleController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('status');
         return $this->middleware(['auth']);
     }
 
@@ -33,7 +35,12 @@ class ArticleController extends Controller
 //            $articles = Article::onlyTrashed()->latest()->paginate(3);
 //            to undelete article use
 //            $articles->restore();
-        $articles = Article::getArticles();
+            if(Auth::user()->roles[0]->name == 'admin'){
+                $articles = Article::getArticles();
+            }
+            else{
+                $articles = Article::getArticlesByAuthor(Auth::user()->id);
+            }
         }
         else {
             $articles = [];
@@ -44,7 +51,12 @@ class ArticleController extends Controller
     }
     public function search(Request $query)
     {
-        $articles = Article::searchFullText($query);
+        if(Auth::user()->roles[0]->name == 'admin'){
+            $articles = Article::searchFullText($query);
+        }
+        else{
+            $articles = Article::searchFullTextForAuthor($query, Auth::user()->id);
+        }
         $statuses = ArticleStatus::all();
         $categories = Category::all();
         return view('admin.articles.index', ['articles' => $articles , 'statuses' => $statuses, 'categories' => $categories]);
@@ -101,7 +113,7 @@ class ArticleController extends Controller
     {
         $article = Article::find($id);
         $article_category = Article::getCategories($article);
-        if(Auth::user()->id !== $article->author->id){
+        if(Auth::user()->roles[0]->name != 'admin' && Auth::user()->id !== $article->author->id){
             return redirect('admin/articles')->with('error', 'Cannot edit this article because it is not yours.');
         }
         $categories = Category::getCategory();
@@ -117,6 +129,10 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticle $request, $id)
     {
+        $article = Article::find($id);
+        if(Auth::user()->id !== $article->author->id){
+            return redirect('admin/articles')->with('error', 'Cannot edit this article because it is not yours.');
+        }
         $this->validate($request, [
             'title' => 'unique:articles,title,'. $id .',id,deleted_at,NULL',
         ]);
@@ -146,6 +162,10 @@ class ArticleController extends Controller
     public function destroy($id)
     {
         $article = Article::find($id);
+
+        if(Auth::user()->roles[0]->name != 'admin' && Auth::user()->id !== $article->author->id){
+            return redirect('admin/articles')->with('error', 'Cannot delete this article because it is not yours.');
+        }
         $article->delete();
         return redirect('admin/articles')->with('success', 'Delete successfully!');
     }

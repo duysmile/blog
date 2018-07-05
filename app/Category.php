@@ -41,24 +41,6 @@ class Category extends Model
         return $count;
     }
 
-    public static function getArticleBelong($category, $article){
-        if($category != null && $category->articles()->where('id_article', '!=', $article->id)->count() > 0){
-            $list_article = $category->articles()->where('id_article', '!=', $article->id)->latest()->limit(3)->get();
-            //TODO : fix display hint
-        }
-        else{
-            $list_article = Article::where([
-                'id_status' => 2,
-
-            ])
-                ->where('id', '!=', $article->id)
-                ->limit(3)
-                ->orderBy('time_public', 'desc')
-                ->get();
-        }
-        return $list_article;
-    }
-
     public function articles(){
         return $this->belongsToMany('App\Article', 'article_category', 'id_category', 'id_article');
     }

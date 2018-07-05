@@ -20,7 +20,7 @@
         <span class="text-light">
             <?= Auth::user()->name ?>
         </span>
-        <a href="{{URL::to('admin/logout')}}">&nbsp;Logout</a>
+        <a class="text-primary" href="{{URL::to('admin/logout')}}">&nbsp;Logout</a>
     </ul>
 </nav>
 

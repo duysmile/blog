@@ -24,6 +24,10 @@
                     </p>
                 </a>
             </div>
+            @else
+                <div class="alert alert-default">
+                    No article here.
+                </div>
             @endif
             @if(count($topArticles) > 1)
             <div class="col-4 d-flex flex-column">
@@ -31,7 +35,7 @@
                     @if($key > 0)
                     <div class="w-100">
                         <a href="{{route('content', [
-                            'category' => count($topArticle->categories) ? $topArticle->cateogries[0]->name : 'no-category',
+                            'category' => count($topArticle->categories) ? $topArticle->categories[0]->name : 'no-category',
                             'article' => $topArticle->title
                         ])}}">
                             <img src="{{$topArticle->images[0]->url}}" alt="" class="w-100 py-2">
@@ -87,6 +91,9 @@
                     @endforeach
                 </div>
                 @endforeach
+                @if(count($articles))
+                    {{ $articles->links('layout.pagination') }}
+                @endif
             </div>
         </div>
     </div>
