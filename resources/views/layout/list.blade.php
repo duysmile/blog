@@ -5,7 +5,7 @@
             <div class="col-5">
                 <a href="{{route('content', [
                     'category' => count($article->categories) > 0 ? $article->categories[0]->name : 'no-category',
-                    'article' => $article->title
+                    'article' => $article['title-en']
                 ])}}">
                 <img src="{{$article->images[0]->url}}" alt="" class="w-100">
                 </a>
@@ -13,7 +13,7 @@
             <div class="col-7">
                 <a href="{{route('content', [
                     'category' => count($article->categories) > 0 ? $article->categories[0]->name : 'no-category',
-                    'article' => $article->title
+                    'article' => $article['title-en']
                 ])}}">
                     <h4 class="m-0">{{$article->title}}</h4>
                     <span>

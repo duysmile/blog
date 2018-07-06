@@ -4,7 +4,7 @@
             <div class="col-8 d-flex flex-column">
                 <a href="{{route('content', [
                     'category' => count($topArticles[0]->categories) ? $topArticles[0]->categories[0]->name : 'no-category',
-                    'article' => $topArticles[0]->title
+                    'article' => $topArticles[0]['title-en']
                 ])}}">
                     <img src="{{$topArticles[0]->images[0]->url}}" alt="" class="w-100 py-2">
                     <h2><b>{{$topArticles[0]->title}}</b></h2>
@@ -36,7 +36,7 @@
                     <div class="w-100">
                         <a href="{{route('content', [
                             'category' => count($topArticle->categories) ? $topArticle->categories[0]->name : 'no-category',
-                            'article' => $topArticle->title
+                            'article' => $topArticle['title-en']
                         ])}}">
                             <img src="{{$topArticle->images[0]->url}}" alt="" class="w-100 py-2">
                             <h4><b>{{$topArticle->title}}</b></h4>
@@ -67,7 +67,7 @@
                         <div class="bg-white p-3 h-100">
                             <a href="{{route('content', [
                                 'category' => count($article->categories) > 0 ? $article->categories[0]->name : 'no-category',
-                                'article' => $article->title
+                                'article' => $article['title-en']
                             ])}}">
                                 <img src="{{$article->images[0]->url}}" alt="" class="w-100 py-2 main__image--height">
                                 <h2><b>{{$article->title}}</b></h2>

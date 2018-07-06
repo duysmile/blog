@@ -25,7 +25,7 @@
             <div class="col-4">
                 <a href="{{route('content', [
                     'category' => count($article_like->categories) ? $article_like->categories[0]->name : 'no-category',
-                    'article' => $article_like->title
+                    'article' => $article_like['title-en']
                 ])}}">
                     <img src="{{$article_like->images[0]->url}}" alt="" class="w-100 like__image--height">
                     <p class="text-center mt-2">

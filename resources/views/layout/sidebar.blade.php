@@ -9,7 +9,7 @@
             <div class="w-100 text-center">
                 <a href="{{route('content', [
                     'category' => count($recentArticle->categories) ? $recentArticle->categories[0]->name : 'no-category',
-                    'article' => $recentArticle->title
+                    'article' => $recentArticle['title-en']
                 ])}}">
                     <img src="{{$recentArticle->images[0]->url}}" alt="" class="w-100">
                     <b class=" d-block py-2">
@@ -45,7 +45,7 @@
             <div class="w-100 text-center">
                 <a href="{{route('content', [
                     'category' => count($popularArticle->categories) ? $popularArticle->categories[0]->name : 'no-category',
-                    'article' => $popularArticle->title
+                    'article' => $popularArticle['title-en']
                 ])}}">
                     <img src="{{$popularArticle->images[0]->url}}" alt="" class="w-100">
                     <b class=" d-block py-2">

@@ -145,6 +145,7 @@ class Article extends Model
         foreach ($request->only('title', 'content') as $key => $value){
             $article[$key] = $value;
         }
+        $article['title-en'] = str_slug($request['title']);
         $article['id_author'] = Auth::user()->id;
         $article['summary'] = Article::getSummary($request['content']);
         if($date = DateTime::createFromFormat('H:i d.m.Y', $request['time_public'])){
@@ -173,6 +174,7 @@ class Article extends Model
         else{
             return false;
         }
+        $article['id_status'] = 0;
         $article->save();
         $article->categories()->detach();
         $article->categories()->attach(Category::whereIn('id', $request->only('category'))->get());
@@ -187,6 +189,19 @@ class Article extends Model
             $article->save();
         }
         return true;
+    }
+    public static function updateArticleStatusDaily(){
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $articles = Article::where([
+            'id_status' => 1,
+        ])->get();
+        foreach($articles as $article){
+            if(strtotime($article['time_public']) <= time()) {
+                $article['id_status'] = 2;
+                $article->save();
+            }
+        }
+        return $articles ? true : false;
     }
 
     public static function searchFullText($request){
@@ -238,7 +253,7 @@ class Article extends Model
 
     public static function getArticleContent($article){
         return Article::where([
-            'title' => $article,
+            'title-en' => $article,
             'id_status' => 2,
         ])->first();
     }
@@ -274,13 +289,20 @@ class Article extends Model
         $category = Category::where([
             'name' => $category_content,
         ])->first();
+
         if($category != null && $category->articles()->where('id_article', '!=', $article->id)->count() > 0){
-            $list_article = $category->articles()->where('id_article', '!=', $article->id)->latest()->limit(3)->get();
+            $list_article = $category->articles()
+                ->where('id_article', '!=', $article->id)
+                ->where([
+                    'id_status' => 2
+                ])
+                ->latest()
+                ->limit(self::$num_article_user['list_like'])
+                ->get();
         }
         else{
             $list_article = Article::where([
                 'id_status' => 2,
-
             ])
                 ->where('id', '!=', $article->id)
                 ->limit(self::$num_article_user['list_like'])

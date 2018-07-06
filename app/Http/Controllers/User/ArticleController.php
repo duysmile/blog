@@ -17,6 +17,7 @@ class ArticleController extends Controller
 
 //        $index = strpos($article, "-");
 //        $id_article = substr($article, $index, strlen($article) - $index);
+
         $article_content = Article::getArticleContent($article);
         $category_content = Article::getArticleLike($category, $article_content);
 
