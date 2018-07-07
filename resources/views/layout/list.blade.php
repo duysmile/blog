@@ -1,4 +1,9 @@
 <div class="d-flex flex-column">
+    @if(!count($articles))
+        <div class="alert alert-default bg-white">
+            No articles here.
+        </div>
+    @endif
     @foreach($articles as $article)
     <div class="bg-white p-3 container-fluid">
         <div class="row">

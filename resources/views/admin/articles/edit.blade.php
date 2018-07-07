@@ -74,7 +74,8 @@
                         </label>
                         @foreach($categories as $categoryParent)
                             <div class="form-check">
-                                <input type="checkbox" class="form-check-input" name="category" value="{{$categoryParent->id}}"
+                                <input data-id="{{$categoryParent->id}}" data-type="parent"
+                                        type="checkbox" class="form-check-input" name="category" value="{{$categoryParent->id}}"
                                     @if(in_array($categoryParent->name, $article_category))
                                        checked
                                     @endif
@@ -90,8 +91,9 @@
                                 <div id="category{{$categoryParent->id}}" class="collapse">
                                     @foreach($categoryParent->child as $child)
                                         <div class="ml-3 form-check">
-                                            <input type="checkbox" class="form-check-input" name="category" value="{{$child->id}}" required
-                                               @if(is_array($article->categories) && in_array($child, $article->categories))
+                                            <input data-type="child" data-parent="{{$categoryParent->id}}"
+                                                    type="checkbox" class="form-check-input" name="category" value="{{$child->id}}"
+                                               @if(in_array($child->name, $article_category))
                                                     checked
                                                @endif
                                             >
@@ -153,5 +155,20 @@
             </a>
         </form>
     </div>
-
+    <script>
+        $(document).ready(function () {
+            $("input:checkbox[data-type|='child']").change(function () {
+                if ($(this).is(':checked')) {
+                    let id_parent = $(this).attr('data-parent');
+                    $("input:checkbox[data-id|= " + id_parent + "]").prop('checked', true);;
+                }
+            });
+            $("input:checkbox[data-type|='parent']").change(function () {
+                if (!$(this).is(':checked')) {
+                    let id_parent = $(this).attr('data-id');
+                    $("input:checkbox[data-parent|= " + id_parent + "]").prop('checked', false);;
+                }
+            });
+        });
+    </script>
 @endsection

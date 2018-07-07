@@ -114,6 +114,7 @@ class Article extends Model
     {
         $articles = Article::where([
             'id_status' => 2,
+            'top' => true,
         ])
             ->orderBy('time_public', 'desc')
             ->orderBy('views', 'desc')
@@ -155,9 +156,12 @@ class Article extends Model
             return false;
         }
         $article->save();
-        $article->categories()->attach(Category::whereIn('id', $request->only('category'))->get());
+        if($request->only('category')){
+            $category_parent = Category::where('id', $request->only('category'))->first();
+            $article->categories()->attach(Category::whereIn('id', [$category_parent->id, $category_parent->id_parent])->get());
+        }
 
-         return Article::saveImageThumbnail($request, $article);
+        return Article::saveImageThumbnail($request, $article);
     }
 
     public static function updateArticle($id, UpdateArticle $request){
@@ -177,7 +181,10 @@ class Article extends Model
         $article['id_status'] = 0;
         $article->save();
         $article->categories()->detach();
-        $article->categories()->attach(Category::whereIn('id', $request->only('category'))->get());
+        if($request->only('category')){
+            $category_parent = Category::where('id', $request->only('category'))->first();
+            $article->categories()->attach(Category::whereIn('id', [$category_parent->id, $category_parent->id_parent])->get());
+        }
         Article::saveImageThumbnail($request, $article);
         return true;
     }
@@ -202,6 +209,12 @@ class Article extends Model
             }
         }
         return $articles ? true : false;
+    }
+    public static function updateArticleTop($request){
+        $request = json_decode($request, true);
+        $article = Article::where(['id' => $request['id']])->first();
+        $article->top = !$article->top;
+        return $article->save() ? true : false;
     }
 
     public static function searchFullText($request){
@@ -252,10 +265,12 @@ class Article extends Model
     }
 
     public static function getArticleContent($article){
-        return Article::where([
+        $article_content = Article::where([
             'title-en' => $article,
             'id_status' => 2,
         ])->first();
+        $article_content['views'] += 1;
+        return $article_content->save() ? $article_content : [];
     }
 
     public static function getTimePublic(){

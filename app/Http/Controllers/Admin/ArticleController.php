@@ -152,6 +152,17 @@ class ArticleController extends Controller
             'status' => 'false',
         ]);
     }
+    public function updateTop(Request $request)
+    {
+        if(Article::updateArticleTop($request->getContent())){
+            return response()->json([
+                'status' => 'true',
+            ]);
+        }
+        return response()->json([
+            'status' => 'false',
+        ]);
+    }
 
     /**
      * Remove the specified resource from storage.

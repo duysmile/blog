@@ -65,9 +65,18 @@
                         <div class="col-2">
                             Title
                         </div>
+                        @if(Auth::user()->role[0] == 'admin')
+                        <div class="col-1">
+                            Author
+                        </div>
+                        <div class="col-1">
+                            Top
+                        </div>
+                        @else
                         <div class="col-2">
                             Author
                         </div>
+                        @endif
                         <div class="col-2">
                             Status
                         </div>
@@ -91,9 +100,27 @@
                             <div class="col-2 pt-1">
                                 {{$article->title}}
                             </div>
+                            @if(Auth::user()->role[0] == 'admin')
+                            <div class="col-1 pt-1">
+                                {{$article->author}}
+                            </div>
+                            <div class="col-1">
+                                <div class="pt-2">
+                                    <label class="switch">
+                                        <input type="checkbox" data-id="{{$article->id}}" name="top" value="true"
+                                            @if($article->top)
+                                               checked
+                                            @endif
+                                        >
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            @else
                             <div class="col-2 pt-1">
                                 {{$article->author}}
                             </div>
+                            @endif
                             <div class="col-2">
                                 <select name="status" id="{{$article->id}}" class="form-control">
                                     @foreach($statuses as $status)
@@ -113,7 +140,7 @@
                             </div>
                             <div class="col-2 pt-1">
                                 @foreach($article->categories as $category)
-                                    {{$category->name}}
+                                    {{$category->name}} <br>
                                 @endforeach
                             </div>
                             <div class="col-2 pt-1">
@@ -170,6 +197,25 @@
         });
         $('#close_status').click(function(){
             $('#success_message').addClass('d-none');
+        });
+        const statusTop = {};
+        $('input:checkbox').change(function () {
+            statusTop.id = $(this).attr('data-id');
+            statusTop.top = $(this).val();
+            $.ajax({
+                headers:{
+                    'X-CSRF-TOKEN': '{{csrf_token()}}'
+                },
+                url: "{{route('articles.updateTop')}}",
+                dataType: 'json',
+                type: "PUT",
+                contentType: 'application/json',
+                data: JSON.stringify(statusTop),
+                success: function (response) {
+                },
+                error: function (error) {
+                }
+            });
         });
     })
 </script>

@@ -19,6 +19,7 @@ class CreateArticlesTable extends Migration
             $table->string('title-en');
             $table->text('content');
             $table->string('summary');
+            $table->boolean('top')->default(false);
             $table->integer('id_author');
             $table->integer('id_status')->default(0);
             $table->integer('views')->default(0);
