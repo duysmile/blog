@@ -269,7 +269,12 @@ class Article extends Model
             'title-en' => $article,
             'id_status' => 2,
         ])->first();
-        $article_content['views'] += 1;
+        if($article_content){
+            $article_content['views'] += 1;
+        }
+        else{
+            return false;
+        }
         return $article_content->save() ? $article_content : [];
     }
 
@@ -282,15 +287,14 @@ class Article extends Model
             ->get(['date']);
         foreach ($time_public as $time){
             $time->value = $time->date;
-            $time->date = Carbon::parse($time->time_public)->format('F, Y');
+            $time->date = Carbon::parse('01-' . $time->date)->format('F, Y');
         }
         return $time_public;
     }
 
     public static function getArticleByTime($time){
-        $time = strtotime('1-'.$time->time);
-        $articles = Article::selectRaw('*')
-            ->where([
+        $time = strtotime('1-'.$time);
+        $articles = Article::where([
                 'id_status' => 2,
             ])
             ->whereMonth('time_public', date('m', $time))
@@ -300,29 +304,60 @@ class Article extends Model
         return $articles;
     }
 
-    public static function getArticleLike($category_content, $article){
-        $category = Category::where([
-            'name' => $category_content,
-        ])->first();
+    public static function getViewsOfMonth($time){
+        $time = strtotime('1-'.$time);
+        $views = Article::where([
+            'id_status' => 2,
+        ])
+            ->whereMonth('time_public', date('m', $time))
+            ->whereYear('time_public', date('Y', $time))
+            ->sum('views');
+        return $views;
+    }
 
-        if($category != null && $category->articles()->where('id_article', '!=', $article->id)->count() > 0){
-            $list_article = $category->articles()
-                ->where('id_article', '!=', $article->id)
-                ->where([
-                    'id_status' => 2
-                ])
-                ->latest()
-                ->limit(self::$num_article_user['list_like'])
-                ->get();
-        }
-        else{
+    public static function getSumOfArticlesOfMonth($time){
+        $time = strtotime('1-'.$time);
+        $sum_articles = Article::where([
+            'id_status' => 2,
+        ])
+            ->whereMonth('time_public', date('m', $time))
+            ->whereYear('time_public', date('Y', $time))
+            ->count();
+        return $sum_articles;
+    }
+
+    public static function getArticleLike($category_content, $article){
+        if($article == null){
             $list_article = Article::where([
                 'id_status' => 2,
             ])
-                ->where('id', '!=', $article->id)
                 ->limit(self::$num_article_user['list_like'])
                 ->orderBy('time_public', 'desc')
                 ->get();
+        }
+        else {
+            $category = Category::where([
+                'name' => $category_content,
+            ])->first();
+
+            if ($category != null && $category->articles()->where('id_article', '!=', $article->id)->count() > 0) {
+                $list_article = $category->articles()
+                    ->where('id_article', '!=', $article->id)
+                    ->where([
+                        'id_status' => 2
+                    ])
+                    ->latest()
+                    ->limit(self::$num_article_user['list_like'])
+                    ->get();
+            } else {
+                $list_article = Article::where([
+                    'id_status' => 2,
+                ])
+                    ->where('id', '!=', $article->id)
+                    ->limit(self::$num_article_user['list_like'])
+                    ->orderBy('time_public', 'desc')
+                    ->get();
+            }
         }
         return $list_article;
     }

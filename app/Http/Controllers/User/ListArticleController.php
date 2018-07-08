@@ -51,7 +51,7 @@ class ListArticleController extends Controller
         $categories = Category::getCategory();
         $time_public = Article::getTimePublic();
 
-        $articles = Article::getArticleByTime($time);
+        $articles = Article::getArticleByTime($time->time);
         return view('user.list_article', [
             'category' => $category,
             'recentArticles' => $recentArticles,

@@ -64,7 +64,7 @@
                     @foreach($articles->chunk(2) as $two_article)
                     <div class="row">
                         @foreach($two_article as $key => $article)
-                        <div class= "col-6 main__card--height">
+                        <div class= "col-6 main__card--height mb-2">
                             <div class="bg-white p-3 h-100">
                                 <a href="{{route('content', [
                                     'category' => count($article->categories) > 0 ? $article->categories[0]->name : 'no-category',

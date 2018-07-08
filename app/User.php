@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -36,6 +37,31 @@ class User extends Authenticatable implements JWTSubject
 
     public static function getUsers(){
         $users = User::where('verify', true)->select('id', 'name', 'email', 'status')->paginate(20);
+        return $users;
+    }
+
+    public static function getTopUsers($time){
+        $time = strtotime('1-'.$time);
+        $users = Article::where([
+                'id_status' => 2
+            ])
+            ->whereMonth('time_public', date('m', $time))
+            ->whereYear('time_public', date('Y', $time))
+            ->select('id_author', DB::raw('SUM(views) as views_article'))
+            ->groupBy('id_author')
+            ->orderBy(DB::raw('SUM(views)'), 'desc')
+            ->limit(10)
+            ->get();
+        foreach($users as $user){
+            $user['articles'] = Article::where([
+                'id_status' => 2,
+                'id_author' => $user->id_author,
+            ])
+                ->whereMonth('time_public', date('m', $time))
+                ->whereYear('time_public', date('Y', $time))
+                ->count();
+            $user['author'] = User::find($user->id_author)->name;
+        }
         return $users;
     }
 

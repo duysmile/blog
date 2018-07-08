@@ -18,11 +18,21 @@ class ArticleController extends Controller
 //        $index = strpos($article, "-");
 //        $id_article = substr($article, $index, strlen($article) - $index);
 
+        $time_public = Article::getTimePublic();
+
         $article_content = Article::getArticleContent($article);
         $category_content = Article::getArticleLike($category, $article_content);
 
-        $time_public = Article::getTimePublic();
-
+        if($article_content == null){
+            return view('user.error', [
+                'recentArticles' => $recentArticles,
+                'popularArticles' => $popularArticles,
+                'article' => $article_content,
+                'categories' => $categories,
+                'articles_like' => $category_content,
+                'time_public' => $time_public,
+            ]);
+        }
         return view('user.content_article', [
             'recentArticles' => $recentArticles,
             'popularArticles' => $popularArticles,

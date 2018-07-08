@@ -65,7 +65,7 @@
                         <div class="col-2">
                             Title
                         </div>
-                        @if(Auth::user()->role[0] == 'admin')
+                        @if(Auth::user()->roles[0]->name == 'admin')
                         <div class="col-1">
                             Author
                         </div>
@@ -100,7 +100,7 @@
                             <div class="col-2 pt-1">
                                 {{$article->title}}
                             </div>
-                            @if(Auth::user()->role[0] == 'admin')
+                            @if(Auth::user()->roles[0]->name == 'admin')
                             <div class="col-1 pt-1">
                                 {{$article->author}}
                             </div>
