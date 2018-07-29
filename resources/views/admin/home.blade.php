@@ -1,7 +1,7 @@
 @extends('layout_admin.master')
 @section('title', 'Home')
 @section('content')
-    <div class="row">
+    <div class="row pt-5">
         <div class="col-8">
             <canvas id="myChart"></canvas>
             <div class="text-center mt-2">
@@ -109,7 +109,20 @@
         <div class="col-4">
             <div class="mt-2">
                 <h5>
-                    Top Users of July
+                    Top Users of
+                    <form action="{{route('admin', 1)}}" class="d-inline-block" id="form-top-user">
+                        <select class="form-control" name="time" id="time-top-user">
+                            @foreach($time as $time_public)
+                                <option value="{{$loop->index}}"
+                                    @if($loop->index == $time_topUser)
+                                        selected
+                                    @endif
+                                >
+                                    {{$time_public->date}}
+                                </option>
+                            @endforeach
+                        </select>
+                    </form>
                 </h5>
             </div>
 
@@ -135,5 +148,11 @@
             </table>
         </div>
     </div>
-
+<script>
+    $(document).ready(function(){
+       $('#time-top-user').on('change', function(){
+          $('#form-top-user').submit();
+       });
+    });
+</script>
 @endsection

@@ -27,6 +27,8 @@ Route::prefix('admin')->group(function (){
     Route::match(['put', 'patch'], 'articles.update_top', 'Admin\ArticleController@updateTop')->name('articles.updateTop');
     Route::resource('categories', 'Admin\CategoryController');
     Route::resource('users', 'Admin\UserController');
+    Route::get('/profile', 'Admin\UserController@profile')->name('profile');
+    Route::match(['put', 'patch'], '/update_profile', 'Admin\UserController@updateProfile')->name('update_profile');
 });
 
 Route::prefix('')->group(function(){

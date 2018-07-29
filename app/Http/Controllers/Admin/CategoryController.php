@@ -11,6 +11,12 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('status');
+        return $this->middleware(['auth']);
+    }
+
     public function index(){
         $categories = Category::getCategory();
         return view('admin.categories.index', ['categories' => $categories]);

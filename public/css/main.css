@@ -1,11 +1,11 @@
 body{
-    font-weight: 600 !important;
+    font-family: "Amaranth";
+}
+.header__i--font-size{
+    font-size: 1.5em;
 }
 .btn{
     font-weight: 600;
-}
-h1{
-    font-family: "Playfair Display";
 }
 h1 a:hover{
     text-decoration: none;
@@ -21,8 +21,99 @@ a{
 }
 a:hover{
     text-decoration: none;
-    color: #000;
+    color: darkslategrey;
 }
 .main__card--height{
     height: 24em;
+}
+.main__container--box-shadow{
+    box-shadow: 1px 2px 4px #ccc;
+}
+#logo{
+    font-family: "Aclonica" !important;
+}
+.sticky-logo{
+    font-family: "Aclonica" !important;
+    font-size: 2em;
+    color: #343a40;
+    display: inline-block;
+    width: 0px;
+    transition: all ease 0.3s;
+}
+#search-box{
+    transition: all ease-in-out .3s;
+    top: -500px;
+}
+.nav__search-box--top{
+    top: 0px !important;
+}
+
+.custom-dropdown-hover{
+    color: white;
+    position: relative;
+    transition: ease 0.3s;
+}
+.custom-dropdown-hover:hover, .custom-dropdown-item:hover{
+    background: #f9f8f0;
+    color: #89848b !important;
+}
+.custom-dropdown:hover .custom-dropdown-menu{
+    background-color: #343a40;
+    display: block;
+}
+.custom-dropdown-menu{
+    display: none;
+    min-width: 150px;
+    background-color: #343a40;
+    position: absolute;
+    box-shadow: 2px 1px 1px #cccccc;
+    z-index: 5;
+}
+.custom-dropdown-menu .custom-dropdown-item{
+    display: block;
+    transition: ease 0.3s;
+    color: white;
+}
+main .container img{
+    max-width: 100%;
+}
+
+.flip{
+    position: relative;
+    transition: all ease 0.5s;
+    overflow: hidden;
+}
+.flip-item{
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    border-width: 0;
+    border-style: solid;
+    border-left-color: #e33d2b;
+    border-top-color: #e33d2b;
+    border-right-color: white;
+    border-bottom-color: white;
+    transition: all ease-in-out .4s;
+    box-shadow: -1px -1px 2px #545454;
+}
+.flip-read-more{
+    z-index: 100;
+    width: 15%;
+    height: 12%;
+    position: absolute;
+    top: -5em;
+    left: 0;
+    transition: all ease .5s;
+}
+.flip-read-more img{
+    width: 100%;
+}
+.flip:hover{
+    opacity: .85;
+}
+.flip:hover .flip-item{
+    border-width: 15px;
+}
+.flip:hover .flip-read-more{
+    top: -.5em;
 }

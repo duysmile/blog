@@ -1,4 +1,4 @@
-<div class="bg-white p-3">
+<div class="bg-white p-3 main__container--box-shadow">
     <h2><b>{{$article->title}}</b></h2>
     <span class="d-block mb-4">
         <small class="mr-2">
@@ -16,18 +16,31 @@
         </small>
     </p>
 </div>
-<div class="bg-white p-3 mt-2">
-    <p class="text-center">YOU MAY ALSO LIKE</p>
+<div class="bg-white p-3 mt-2 main__container--box-shadow">
+    <p class="text-center">
+        <i class="fa fa-thumbs-up"></i> YOU MAY ALSO LIKE
+    </p>
     <hr>
     <div class="container-fluid">
         <div class="row">
             @foreach($articles_like as $article_like)
             <div class="col-4">
+                <div class="flip">
+                    <a href="{{route('content', [
+                        'category' => count($article_like->categories) ? $article_like->categories[0]->name : 'no-category',
+                        'article' => $article_like['title-en']
+                    ])}}">
+                        <img src="{{$article_like->images[0]->url}}" alt="" class="w-100 like__image--height">
+                        <span class="flip-item"></span>
+                        <span class="flip-read-more">
+                            <img src="{{asset('images/bookmark.png')}}" alt="">
+                        </span>
+                    </a>
+                </div>
                 <a href="{{route('content', [
-                    'category' => count($article_like->categories) ? $article_like->categories[0]->name : 'no-category',
-                    'article' => $article_like['title-en']
-                ])}}">
-                    <img src="{{$article_like->images[0]->url}}" alt="" class="w-100 like__image--height">
+                        'category' => count($article_like->categories) ? $article_like->categories[0]->name : 'no-category',
+                        'article' => $article_like['title-en']
+                    ])}}">
                     <p class="text-center mt-2">
                         {{$article_like->title}}
                     </p>

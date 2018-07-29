@@ -17,8 +17,10 @@
         @endif
     </ul>
     <ul class="navbar-nav ml-auto">
-        <span class="text-light">
-            <?= Auth::user()->name ?>
+        <span>
+            <a class="text-light" href="{{route('profile')}}">
+                <?= Auth::user()->name ?>
+            </a>
         </span>
         <a class="text-primary" href="{{URL::to('admin/logout')}}">&nbsp;Logout</a>
     </ul>

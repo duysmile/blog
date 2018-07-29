@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -36,7 +37,7 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     public static function getUsers(){
-        $users = User::where('verify', true)->select('id', 'name', 'email', 'status')->paginate(20);
+        $users = User::where('verify', true)->where('id', '!=', Auth::user()->id)->select('id', 'name', 'email', 'status')->paginate(20);
         return $users;
     }
 
@@ -93,8 +94,6 @@ class User extends Authenticatable implements JWTSubject
         if($request['status'] == null){
             $request['status'] = false;
         }
-//        var_dump($request['status']);
-//        die();
         if($request['password'] != null){
             $request->validate([
                 'password' => 'min:6',
@@ -112,7 +111,30 @@ class User extends Authenticatable implements JWTSubject
         foreach($request->only('name', 'email', 'status') as $key => $value){
             $user[$key] = $value;
         }
-        return $user->save();}
+        return $user->save();
+    }
+    public static function updateProfile($id, $request){
+        $user = User::find($id);
+        if($request->current_password != null){
+            $credentials = [
+                'email' => Auth::user()->email,
+                'password' => $request->current_password
+            ];
+            if(!Auth::attempt($credentials)){
+                return false;
+            }
+        }
+        foreach($request->only(['name', 'email', 'password']) as $key => $item){
+            if($item != null){
+                if($key == 'password'){
+                    $user[$key] = bcrypt($item);
+                }else{
+                    $user[$key] = $item;
+                }
+            }
+        }
+        return $user->save();
+    }
 
     public function articles(){
         return $this->hasMany('App\Article', 'id_author', 'id');

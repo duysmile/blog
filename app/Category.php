@@ -13,12 +13,18 @@ class Category extends Model
     ];
     protected $table = 'categories';
 
+    public function child()
+    {
+        return $this->hasMany('App\Category', 'id_parent', 'id');
+    }
     public static function getCategory(){
-        $categories = Category::whereNull('id_parent')->get();
-        foreach($categories as $category){
-            $category['count_articles'] = $category->articles->count() + Category::countArticlesParent($category->id);
-            $category['child'] = Category::where('id_parent', $category->id)->get();
-        }
+        $categories = Category::whereNull('id_parent')->with('child')->get();
+//        code above is similar to the block below
+//        foreach($categories as $category){
+//            $category['count_articles'] = $category->articles->count() + Category::countArticlesParent($category->id);
+//            $category['child'] = Category::where('id_parent', $category->id)->get();
+//        }
+
         return $categories;
     }
     public static function saveCategory($request){

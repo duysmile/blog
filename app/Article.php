@@ -33,13 +33,13 @@ class Article extends Model
     private static function getSummary($content){
         $summary = preg_replace("/<[^>]*>/","", $content);
         preg_match_all('/\./', $summary,$matches, PREG_OFFSET_CAPTURE);
-        if(count($matches[0]) > 2){
-            $endpoint = $matches[0][1][1] + 1;
+        if(count($matches[0]) > 1){
+            $endpoint = $matches[0][1][0] + 1; //get second dot in paragraph
         }
         else{
             $endpoint = strlen($summary);
         }
-        $summary = substr($summary, 0, $endpoint);
+        $summary = substr($summary, 0, $endpoint) . "...";
         return $summary;
     }
 
@@ -367,12 +367,14 @@ class Article extends Model
         $category = Category::where([
             'name' => $category,
         ])->first();
-
-        $articles = $category->articles()
-            ->where('id_status', 2)
-            ->orderBy('time_public', 'desc')
-            ->paginate(self::$num_article_user['list_category']);
-        $articles = Article::getAuthor($articles);
+        $articles = [];
+        if($category){
+            $articles = $category->articles()
+                ->where('id_status', 2)
+                ->orderBy('time_public', 'desc')
+                ->paginate(self::$num_article_user['list_category']);
+            $articles = Article::getAuthor($articles);
+        }
         return $articles;
     }
 

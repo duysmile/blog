@@ -14,16 +14,26 @@ class HomeController extends Controller
     {
         return $this->middleware(['auth']);
     }
-    public function index(){
+    public function index(Request $time_specify){
+        if(!$time_specify->only('time')){
+            $time_specify->time = 0;
+        }
+        $time_topUser = $time_specify->time;
         $user = Auth::user();
         $time = Article::getTimePublic();
         foreach ($time as $month){
             $month['view'] = Article::getViewsOfMonth($month->value);
             $month['sum-articles'] = Article::getSumOfArticlesOfMonth($month->value);
         }
-        $topUsers = User::getTopUsers($time[0]->value);
-        return view('admin/home', compact(['user', 'time', 'topUsers']));
+        if(count($time)){
+            $topUsers = User::getTopUsers($time[$time_topUser]->value);
+        }
+        else{
+            $topUsers = [];
+        }
+        return view('admin/home', compact(['user', 'time', 'topUsers', 'time_topUser']));
     }
+
     public function logout(){
         Auth::logout();
         return redirect('/admin/');

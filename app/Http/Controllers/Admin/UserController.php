@@ -4,13 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUser;
+use App\Http\Requests\UpdateProfile;
 use App\Http\Requests\UpdateUser;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('status');
+        return $this->middleware(['auth']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -88,5 +95,22 @@ class UserController extends Controller
         $user = User::find($id);
         $user->delete();
         return redirect("admin/users")->with('success', 'Delete successfully!');
+    }
+
+    public function profile()
+    {
+        $user = Auth::user();
+        return view('admin.users.profile', ['user' => $user]);
+    }
+    public function updateProfile(UpdateProfile $request)
+    {
+        $id = Auth::user()->id;
+        $this->validate($request, [
+            'email' => 'unique:users,email,'. $id .',id',
+        ]);
+        if(!User::updateProfile($id, $request)){
+            return redirect("admin/profile/")->with('error', 'Password confirmation not incorrect.');
+        }
+        return redirect("admin/")->with('success', 'Update successfully!');
     }
 }

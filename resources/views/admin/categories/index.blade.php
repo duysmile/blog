@@ -26,7 +26,7 @@
                 @foreach($categories as $category)
                     <li class='d-flex align-items-center text-center p-2' data-toggle="collapse" data-target="{{'#category-' . $category->id}}">
                         <div class="col-2">{{$loop->index + 1}}</div>
-                        <div class="col-6">{{$category->name}}({{$category->count_articles}})</div>
+                        <div class="col-6">{{$category->name}}({{$category->count_articles ? $category->count_articles : '0'}})</div>
                         <div class="col-4">
                             <a class="btn btn-primary" href="{{route('categories.edit', $category->id)}}">
                                 <i class="fa fa-edit"></i>
@@ -44,13 +44,13 @@
                         </div>
 
                     </li>
-
+                        <?php $parent_index = $loop->index + 1;?>
                         @if(count($category->child) > 0)
                         <li class="collapse" id="{{'category-' . $category->id}}">
                             <ul class="d-flex flex-column bg-light text-dark my-1 py-1 pl-0" >
                                 @foreach($category->child as $child)
                                     <li class="d-flex align-items-center text-center pb-1">
-                                        <div class="col-2">{{'c' . ($loop->index + 1)}}</div>
+                                        <div class="col-2">{{$parent_index . '.' . ($loop->index + 1)}}</div>
                                         <div class="col-6">{{$child->name}}({{$child->articles->count()}})</div>
                                         <div class="col-4">
                                             <a class="btn btn-primary" href="{{route('categories.edit', ['categoryId' => $child->id])}}">
