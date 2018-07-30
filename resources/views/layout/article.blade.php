@@ -24,7 +24,7 @@
     <div class="container-fluid">
         <div class="row">
             @foreach($articles_like as $article_like)
-            <div class="col-4">
+            <div class="col-md-4 col-12">
                 <div class="flip">
                     <a href="{{route('content', [
                         'category' => count($article_like->categories) ? $article_like->categories[0]->name : 'no-category',

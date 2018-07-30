@@ -23,7 +23,7 @@
 <main class="bg-light pb-4">
     <div class="container">
         <div class="row pt-2">
-            <div class="col-8 p-3">
+            <div class="col-md-8 col-12 p-3">
                 @yield('main')
             </div>
             @include('layout.sidebar')

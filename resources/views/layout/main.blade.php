@@ -1,14 +1,14 @@
 <div class="container">
     @if(count($topArticles) > 0)
         <div class="row bg-white mb-2 pb-2 main__container--box-shadow">
-            <div class="col-12 bg-dark p-2 mb-3">
+            <div class="col-md-12 bg-dark p-2 mb-3">
                 <i class="text-white fa fa-align-justify p-2 pr-0">
                 </i>
                 <h5 class="d-inline-block text-white pt-1">
                     TOP
                 </h5>
             </div>
-            <div class="col-8 d-flex flex-column">
+            <div class="col-md-8 col-12 d-flex flex-column">
                 <div class="flip mb-2">
                     <a href="{{route('content', [
                         'category' => count($topArticles[0]->categories) ? $topArticles[0]->categories[0]->name : 'no-category',
@@ -45,7 +45,7 @@
                 </div>
             </div>
             @if(count($topArticles) > 1)
-                <div class="col-4 d-flex flex-column">
+                <div class="col-md-4 col-12 d-flex flex-column">
                     @foreach($topArticles as $key => $topArticle)
                         @if($key > 0)
                             <div class="w-100">
@@ -104,7 +104,7 @@
                 @foreach($articles->chunk(2) as $two_article)
                     <div class="row d-flex justify-content-between">
                         @foreach($two_article as $key => $article)
-                            <div class= "col-6 mb-3">
+                            <div class= "col-md-6 col-12 mb-3">
                                 <div class="bg-white p-3 h-100 main__container--box-shadow">
                                     <div class="flip">
                                         <a href="{{route('content', [

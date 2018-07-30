@@ -24,6 +24,9 @@ class Category extends Model
 //            $category['count_articles'] = $category->articles->count() + Category::countArticlesParent($category->id);
 //            $category['child'] = Category::where('id_parent', $category->id)->get();
 //        }
+        foreach($categories as $category){
+            $category['count_articles'] = $category->articles->count() + Category::countArticlesParent($category->id);
+        }
 
         return $categories;
     }

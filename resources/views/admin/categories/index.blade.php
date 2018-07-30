@@ -11,7 +11,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <a class="btn btn-default mt-3 mb-3 bg-secondary text-light" href="{{route('categories.create')}}">Create new cateogry</a>
+            <a class="btn btn-default mt-3 mb-3 bg-secondary text-light" href="{{route('categories.create')}}">Create new category</a>
         </div>
     </div>
 

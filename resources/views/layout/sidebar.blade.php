@@ -1,4 +1,4 @@
-<div class="col-4 mt-3">
+<div class="col-md-4 col-12 mt-3">
     <div class="bg-white ml-1 pt-4 px-3 main__container--box-shadow">
         <p class="text-center">
             <i class="fa fa-calendar text-dark"></i>

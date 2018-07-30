@@ -1,12 +1,12 @@
-<footer class="container-fluid bg-white py-3 px-5 main__container--box-shadow">
-    <div class="mx-5 d-flex justify-content-around">
-        <p>
+<footer class="container-fluid bg-white py-3 px-md-5 main__container--box-shadow">
+    <div class="mx-5 d-md-flex justify-content-around">
+        <p class="text-center">
             <i class="fa fa-envelope"></i> duy210697@gmail.com
         </p>
-        <p>
-            <i class="fa fa-facebook-square"></i> https://www.facebook.com/duydi21
+        <p class="text-center">
+            <i class="fa fa-facebook-square"></i> www.facebook.com/duydi21
         </p>
-        <p>
+        <p class="text-center">
             <i class="fa fa-phone"></i> +84 1268 447 315
         </p>
     </div>

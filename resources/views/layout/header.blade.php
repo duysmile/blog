@@ -1,13 +1,13 @@
 <header class="container">
     <div class="row pt-3 pb-2 d-flex align-items-center">
-        <div class="col-4">
+        <div class="col-md-4 col-12">
             <h1>
                 <a id="logo" href="{{route('home')}}">
                     TorF's Blog
                 </a>
             </h1>
         </div>
-        <div class="col-8 d-flex align-items-center justify-content-end">
+        <div class="col-md-8 d-md-flex d-none align-items-center justify-content-end">
             <div class="p-2 text-blue">
                 <a href="">
                     <i class="fa fa-facebook-square mr-2 header__i--font-size"></i>
