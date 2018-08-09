@@ -15,8 +15,8 @@ class CreateArticleImageTable extends Migration
     {
         Schema::create('article_image', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_article');
-            $table->integer('id_image');
+            $table->integer('id_article')->unsigned()->references('id')->on('articles')->onDelete('cascade');
+            $table->integer('id_image')->unsigned()->references('id')->on('images')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

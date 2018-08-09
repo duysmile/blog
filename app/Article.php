@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use JD\Cloudder\Facades\Cloudder;
 
 class Article extends Model
 {
@@ -130,10 +131,16 @@ class Article extends Model
             $fileExtension = $request->thumbnail->getClientOriginalExtension();
 
             $fileName = 'thumbnail_' . $article->id . "_" . time() . '.' . $fileExtension;
-            $uploadPath = public_path('/files/' . Auth::user()->id);
-            $request->file('thumbnail')->move($uploadPath, $fileName);
+            $image_name = $request->file('thumbnail')->getRealPath(); //get image in temp
+//            $uploadPath = public_path('/files/' . Auth::user()->id);
+//            $request->file('thumbnail')->move($uploadPath, $fileName);
+            Cloudder::upload($image_name, $fileName, [
+                "folder" => "thumbnail/",
+            ]);
+            list($width, $height) = getimagesize($image_name);
+
             $image = new Image();
-            $image->url = "/files/". Auth::user()->id . "/" . $fileName;
+            $image->url= Cloudder::show(Cloudder::getPublicId(), ["width" => $width, "height"=>$height]);
             $image->save();
             $article->images()->attach(Image::where('id', $image->id)->get());
             return true;

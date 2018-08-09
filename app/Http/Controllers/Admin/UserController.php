@@ -93,8 +93,12 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        $user->delete();
-        return redirect("admin/users")->with('success', 'Delete successfully!');
+        if($user->articles->count() == 0){
+            $user->delete();
+            return redirect("admin/users")->with('success', 'Delete successfully!');
+        } else {
+            return redirect("admin/users")->with('error', 'Cannot delete user that has articles.');
+        }
     }
 
     public function profile()

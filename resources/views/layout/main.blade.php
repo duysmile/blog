@@ -33,8 +33,12 @@
                                                 <i class="fa fa-user"></i><b>&nbsp;{{$topArticles[0]->author}}</b>
                                             </small>
 
-                                            <small>
-                                                <i class="fa fa-clock"></i>&nbsp;{{date('d-m-Y', strtotime($topArticles[0]->time_public))}}
+                                            <small class="mr-2">
+                                                <i class="fa fa-calendar"></i>&nbsp;{{date('d-m-Y', strtotime($topArticles[0]->time_public))}}
+                                            </small>
+
+                                            <small class="mr-2">
+                                                <i class="fa fa-eye"></i><b>&nbsp;{{$topArticles[0]->views}}</b>
                                             </small>
                                         </span>
                     <p class="text-justify">
@@ -69,14 +73,16 @@
                                         <h6 class="text-justify"><b>{{$topArticle->title}}</b></h6>
                                     </a>
                                     <span>
-                                                            <small class="mr-2">
-                                                                <i class="fa fa-user"></i><b>&nbsp;{{$topArticle->author}}</b>
-                                                            </small>
-
-                                                            <small>
-                                                                <i class="fa fa-clock"></i>&nbsp;{{date('d-m-Y', strtotime($topArticle->time_public))}}
-                                                            </small>
-                                                        </span>
+                                        <small class="mr-2">
+                                            <i class="fa fa-user"></i><b>&nbsp;{{$topArticle->author}}</b>
+                                        </small>
+                                        <small class="mr-2">
+                                            <i class="fa fa-calendar"></i>&nbsp;{{date('d-m-Y', strtotime($topArticle->time_public))}}
+                                        </small>
+                                        <small class="mr-2">
+                                                <i class="fa fa-eye"></i><b>&nbsp;{{$topArticle->views}}</b>
+                                        </small>
+                                    </span>
                                 </div>
                             </div>
                         @endif
@@ -127,14 +133,18 @@
                                             <h5><b>{{$article->title}}</b></h5>
                                         </a>
                                         <span>
-                                                                <small class="mr-2">
-                                                                    <i class="fa fa-user"></i><b>&nbsp;{{$article->author}}</b>
-                                                                </small>
+                                            <small class="mr-2">
+                                                <i class="fa fa-user"></i><b>&nbsp;{{$article->author}}</b>
+                                            </small>
 
-                                                                <small>
-                                                                    <i class="fa fa-clock"></i>&nbsp;{{date('d-m-Y', strtotime($article->time_public))}}
-                                                                </small>
-                                                            </span>
+                                            <small class="mr-2">
+                                                <i class="fa fa-calendar"></i>&nbsp;{{date('d-m-Y', strtotime($article->time_public))}}
+                                            </small>
+
+                                            <small class="mr-2">
+                                                <i class="fa fa-eye"></i><b>&nbsp;{{$article->views}}</b>
+                                            </small>
+                                        </span>
                                         <p class="text-justify">
                                             <small>
                                                 {{$article->summary}}

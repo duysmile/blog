@@ -8,6 +8,12 @@
                 {{$message}}
             </div>
         @endif
+        @if($message = Session::get('error'))
+            <div class="alert alert-warning col-12">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {{$message}}
+            </div>
+        @endif
     </div>
     <div class="row">
         <div class="col-12">
@@ -70,7 +76,7 @@
 
                         </div>
 
-                        @component('layout_admin.components.modal_categories')
+                        @component('layout_admin.components.modal_users')
                             @slot('id')
                                 {{$user->id}}
                             @endslot

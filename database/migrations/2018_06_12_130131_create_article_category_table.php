@@ -15,8 +15,8 @@ class CreateArticleCategoryTable extends Migration
     {
         Schema::create('article_category', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_article');
-            $table->integer('id_category');
+            $table->integer('id_article')->unsigned()->references('id')->on('articles')->onDelete('cascade');
+            $table->integer('id_category')->unsigned()->references('id')->on('categories')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

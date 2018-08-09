@@ -15,8 +15,8 @@ class CreateRoleUserTable extends Migration
     {
         Schema::create('role_user', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_role');
-            $table->integer('id_user');
+            $table->integer('id_role')->unsigned()->references('role_code')->on('roles')->onDelete('cascade');
+            $table->integer('id_user')->unsigned()->refenreces('id')->on('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -20,8 +20,8 @@ class CreateArticlesTable extends Migration
             $table->text('content');
             $table->text('summary');
             $table->boolean('top')->default(false);
-            $table->integer('id_author');
-            $table->integer('id_status')->default(0);
+            $table->integer('id_author')->unsigned()->references('id')->on('users');
+            $table->integer('id_status')->unsigned()->references('status_code')->on('article_status')->default(0);
             $table->integer('views')->default(0);
             $table->dateTime('time_public');
             $table->softDeletes();

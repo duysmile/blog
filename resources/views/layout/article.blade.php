@@ -4,9 +4,11 @@
         <small class="mr-2">
             <i class="fa fa-user"></i><b>&nbsp;{{$article->author->name}}</b>
         </small>
-
-        <small>
-            <i class="fa fa-clock"></i>&nbsp;{{date('d-m-Y', strtotime($article->time_public))}}
+        <small class="mr-2">
+            <i class="fa fa-calendar"></i>&nbsp;{{date('d-m-Y', strtotime($article->time_public))}}
+        </small>
+        <small class="mr-2">
+            <i class="fa fa-eye"></i><b>&nbsp;{{$article->views}}</b>
         </small>
     </span>
     <img src="{{$article->images[0]->url}}" alt="" class="w-100 mb-2">

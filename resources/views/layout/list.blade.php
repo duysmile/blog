@@ -33,10 +33,13 @@
                         <i class="fa fa-user"></i><b>&nbsp;{{$article->author}}</b>
                     </small>
 
-                    <small>
-                        <i class="fa fa-clock"></i>&nbsp;{{date('d-m-Y', strtotime($article->time_public))}}
+                    <small class="mr-2">
+                        <i class="fa fa-calendar"></i>&nbsp;{{date('d-m-Y', strtotime($article->time_public))}}
                     </small>
-                    <p>
+                    <small class="mr-2">
+                        <i class="fa fa-eye"></i><b>&nbsp;{{$article->views}}</b>
+                    </small>
+                    <p class="d-md-block d-none">
                         {{$article->summary}}
                     </p>
                 </span>

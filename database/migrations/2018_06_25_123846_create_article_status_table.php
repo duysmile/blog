@@ -15,7 +15,7 @@ class CreateArticleStatusTable extends Migration
     {
         Schema::create('article_status', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('status_code');
+            $table->integer('status_code')->unsigned();
             $table->string('name');
             $table->timestamps();
         });
@@ -28,6 +28,6 @@ class CreateArticleStatusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('status_article');
+        Schema::dropIfExists('article_status');
     }
 }
