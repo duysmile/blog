@@ -6,7 +6,7 @@
                     TorF's Blog
                 </a>
             </h1>
-        </div>
+        </div>        
         <div class="col-md-8 d-md-flex d-none align-items-center justify-content-end">
             <div class="p-2 text-blue">
                 <a href="">
@@ -18,7 +18,7 @@
             </div>
             <form action="{{route('search')}}" class="form-inline border-none" method="get">
                 <div class="input-group w-100">
-                    <input class="form-control border-right-0 border" type="text" name="query" placeholder="Search" id="example-search-input">
+                    <input class="form-control border-right-0 border" type="text" name="query" placeholder="Search">
                     <span class="input-group-append">
                         <button class="btn btn-outline-secondary border-left-0 border" type="submit">
                             <i class="fa fa-search"></i>

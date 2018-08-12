@@ -16,7 +16,11 @@ class CreateCommentsTable extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
             $table->string('content');
-            $table->boolean('is_liked');
+            $table->string('email');
+            $table->string('name');
+            $table->integer('id_parent')->nullable(true);
+            $table->integer('id_article');
+            $table->boolean('is_liked')->default(false);
             $table->softDeletes();
             $table->timestamps();
         });

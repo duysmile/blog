@@ -122,3 +122,52 @@ main .container img{
 .flip:hover .flip-read-more{
     top: -0.65em;
 }
+
+/* .p-relative{
+    position: relative;
+}
+.login-button-collapse{
+    width: 30px;
+    height: 30px;
+    padding-left: 3px;
+    content: "";
+    position: absolute;
+    top: -2em;
+    left: 20em;
+    cursor: pointer;
+    border-style: solid;
+    border-left-color: #ef7777;
+    border-right-color: #ef7777;
+    border-top-color: #ef7777;
+    border-bottom-color: #ef7777;
+    border-width: 10px;
+    background: #ef7777;
+    transform: rotate(45deg);
+}
+.login-button-collapse i{
+    color: white;
+    transform: rotate(-45deg);
+} */
+
+#comment{
+    height: 50px;
+    transition: all ease 0.3s;
+}
+#comment-post{
+    display: none;
+    height: 0;
+    transition: all ease 0.3s;
+}
+.icon-avatar{
+    background: white;
+    padding: 0.5em 0.9em;
+    margin: 0 10px;
+    border-radius: 50%;
+    border: #ccc 1px solid;
+}
+.h-comment{
+    height: 2.6em;
+}
+.hint-text{
+    color: #ccc;
+}

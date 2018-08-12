@@ -13,13 +13,13 @@ class CreateMemberTable extends Migration
      */
     public function up()
     {
-        Schema::create('member', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name', 100);
-            $table->string('email', 100);
-            $table->string('avatar', 256);
-            $table->timestamps();
-        });
+        // Schema::create('member', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->string('name', 100);
+        //     $table->string('email', 100);
+        //     $table->string('avatar', 256)->nullable();
+        //     $table->timestamps();
+        // });
     }
 
     /**
@@ -29,6 +29,6 @@ class CreateMemberTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('member');
+        // Schema::dropIfExists('member');
     }
 }

@@ -13,14 +13,14 @@ class CreateCommentUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('comment_user', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('id_comment')->unsigned()->references('id')->on('comments');
-            $table->integer('id_member')->unsigned()->references('id')->on('users');
-            $table->integer('id_article')->unsigned()->references('id')->on('articles');
-            $table->softDeletes();
-            $table->timestamps();
-        });
+        // Schema::create('comment_user', function (Blueprint $table) {
+        //     // $table->increments('id');
+        //     // $table->integer('id_comment')->unsigned()->references('id')->on('comments');
+        //     // // $table->integer('id_member')->unsigned()->references('id')->on('members');
+        //     // $table->integer('id_article')->unsigned()->references('id')->on('articles');
+        //     // $table->softDeletes();
+        //     // $table->timestamps();
+        // });
     }
 
     /**
@@ -30,6 +30,6 @@ class CreateCommentUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('comment_user');
+        // Schema::dropIfExists('comment_user');
     }
 }

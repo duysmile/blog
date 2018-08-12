@@ -397,4 +397,7 @@ class Article extends Model
     public function status(){
         return $this->hasOne('App\ArticleStatus', 'status_code', 'id_status');
     }
+    public function comments(){
+        return $this->hasMany('App\Comment', 'id_article', 'id');
+    }
 }

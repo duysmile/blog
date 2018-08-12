@@ -58,7 +58,7 @@
             <div id="search-box" class="col-md-4 align-items-center justify-content-end d-md-flex d-none">
                 <form action="{{route('search')}}" class="form-inline border-none" method="get">
                     <div class="input-group">
-                        <input class="form-control border-right-0 border" type="text" name="query" placeholder="Search" id="example-search-input">
+                        <input class="form-control border-right-0 border" type="text" name="query" placeholder="Search">
                         <span class="input-group-append">
                             <button class="btn btn-outline-secondary border-left-0 border" type="submit">
                                 <i class="fa fa-search text-light"></i>
@@ -74,7 +74,7 @@
             <div class="col-12 d-md-none d-block p-0">
                 <form action="{{route('search')}}" class="form-inline border-none" method="get">
                     <div class="input-group">
-                        <input class="form-control border-right-0 border" type="text" name="query" placeholder="Search" id="example-search-input">
+                        <input class="form-control border-right-0 border" type="text" name="query" placeholder="Search">
                         <span class="input-group-append bg-dark border-0">
                             <button class="btn btn-outline-secondary border-left-0 border" type="submit">
                                 <i class="fa fa-search text-light"></i>

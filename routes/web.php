@@ -16,6 +16,9 @@ Route::get('/signup', 'User\SignupController@index')->name('signup');
 Route::post('/signup/verify', 'User\SignupController@store')->name('verify');
 Route::get('/signup/verify/{token}', 'User\SignupController@verifyUser');
 
+Route::get('/redirect', 'SocialAuthFacebookController@redirect');
+Route::get('/callback', 'SocialAuthFacebookController@callback');
+
 Route::prefix('admin')->group(function (){
     Route::get('/', 'Admin\SigninController@index')->name('signin');
     Route::post('/login', 'Admin\SigninController@login')->name('login');
@@ -37,4 +40,5 @@ Route::prefix('')->group(function(){
     Route::get('/search', 'User\ListArticleController@search')->name('search');
     Route::get('/{category}/{article}', 'User\ArticleController@index')->name('content');
     Route::get('/{category}', 'User\ListArticleController@index')->name('list');
+    Route::resource('comments', 'User\CommentController');
 });
