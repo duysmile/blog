@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Article;
 use App\Category;
+use App\Comment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -33,6 +34,9 @@ class ArticleController extends Controller
                 'time_public' => $time_public,
             ]);
         }
+
+        $comments = Comment::getComments($article_content->id);
+        $count_comment = Comment::getCountComments($comments);
         return view('user.content_article', [
             'recentArticles' => $recentArticles,
             'popularArticles' => $popularArticles,
@@ -40,6 +44,8 @@ class ArticleController extends Controller
             'categories' => $categories,
             'articles_like' => $category_content,
             'time_public' => $time_public,
+            'comments' => $comments,
+            'count_comment' => $count_comment,
         ]);
     }
 }

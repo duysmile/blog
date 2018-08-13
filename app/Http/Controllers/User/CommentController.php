@@ -13,7 +13,7 @@ class CommentController extends Controller
         if ( Comment::create($request->getContent()) ) {
             return response()->json([
                 'status' => true
-            ]);`
+            ]);
         } else {
             return response()->json([
                 'status' => false

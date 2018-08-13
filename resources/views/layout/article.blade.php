@@ -1,11 +1,4 @@
-<!-- <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = 'https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.1&appId=392449574568121&autoLogAppEvents=1';
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script> -->
+
 <div class="bg-white p-3 main__container--box-shadow">
     <h2><b>{{$article->title}}</b></h2>
     <span class="d-block mb-4">
@@ -60,23 +53,73 @@
         </div>
     </div>
 </div>
-<!-- <div class="fb-comments" data-width="100%" data-numposts="5"></div> -->
 <div class="container my-2">
 	<div class="row p-2">
-		1 comment
+		{{$count_comment > 1 ? $count_comment . " comments" : $count_comment . " comment"}}
 	</div>
 
     <ul class="row mb-3 p-0" id="list-comment">
+        @foreach($comments as $comment)
 		<li class="d-flex w-100 flex-column border-bottom mt-1">
-            @component('layout/comment')
-                @slot('name')
-                    Duy
-                @endslot
-                @slot('comment')
-                    Comment
-                @endslot
-            @endcomponent
+
+            <div class="d-flex w-100">
+                <div class="h-50 icon-avatar">
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="w-100">
+                    <p>
+                        <span class="text-primary">
+                            {{ $comment->name }}
+                        </span>
+                                    <br>
+                                    <span>
+                            {{ $comment->content }}
+                        </span>
+                                    <br>
+                                    <span class="text-primary">
+                            <a href="" class="text-primary">
+                                <i class="fa fa-thumbs-up mr-1">&nbsp;Like</i>
+                            </a>
+                            <a href="" class="text-primary">
+                                <i class="fa fa-reply"  data-reply="{{ $comment->id }}">&nbsp;Reply</i>
+                            </a>
+                        </span>
+                    </p>
+                </div>
+            </div>
+            <ul>
+                @foreach($comment->child as $child)
+                    <li class="d-flex w-100 flex-column border-top pt-1">
+                        <div class="d-flex w-100">
+                            <div class="h-50 icon-avatar">
+                                <i class="fa fa-user"></i>
+                            </div>
+                            <div class="w-100">
+                                <p>
+                                    <span class="text-primary">
+                                        {{ $child->name }}
+                                    </span>
+                                                <br>
+                                                <span>
+                                        {{ $child->content }}
+                                    </span>
+                                                <br>
+                                                <span class="text-primary">
+                                        <a href="" class="text-primary">
+                                            <i class="fa fa-thumbs-up mr-1">&nbsp;Like</i>
+                                        </a>
+                                        <a href="" class="text-primary">
+                                            <i class="fa fa-reply"  data-reply="1">&nbsp;Reply</i>
+                                        </a>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </li>
+                @endforeach
+            </ul>
 		</li>
+        @endforeach
     </ul>
 
     <div class="row mb-3" id="comment-box-main">
@@ -178,9 +221,10 @@
         }
         return comment;
     }
-    function commentBox(data) {
+    function commentBox(id_parent) {
         $("#comment-box-main").hide();
         $("#comment-box-child").remove();
+        var parent = id_parent ? "<input type='hidden' name='id_parent' value='" + id_parent + "'>" : "";
         var box ='<div class="row mb-3" id="comment-box-child">' +
                     '<form action="" class="w-100" id="post-comment-child">' +
                         '<div class="d-flex">' +
@@ -193,6 +237,7 @@
                                 '</button>' +
                             '</div>' +
                         '</div>' +
+                        parent +
                         '<div class="d-flex">' +
                             '<div class="form-group w-100">' +
                                ' <input id="comment" type="text" class="form-control w-100"' +
@@ -233,17 +278,19 @@
             contentType: 'application/json',
             data: JSON.stringify(data),
             success: function (response) {
-                console.log(response);
+                // console.log(response);
             },
             error: function (error) {
-                console.log(error);
+                // console.log(error);
             }
         });
     }
     $(document).ready(function () {
         $(document).on('click', "i.fa-reply", function(e) {
             e.preventDefault();
-            $(this).parents("li").append(commentBox(1));
+            var id_parent = $(this).attr('data-reply');
+            // console.log(id_parent);
+            $(this).parents("li").append(commentBox(id_parent));
         })
         $(document).on('click', "#comment", function(){
             $("#comment").css("height", "70px")
@@ -268,12 +315,16 @@
             $("input[name='email']").val("");  
             $("input[name='comment']").val("");  
         })
-        //TODO: add reply comment and add CommentController
+
         $(document).on('submit',"#post-comment-child", function(e) {
             e.preventDefault();
             var name = $("input[name='name']").val();
             var email = $("input[name='email']").val();
             var content = $("input[name='comment']").val();
+            var id_article = {{$article->id}};
+            var id_parent = $("input[name='id_parent']").val();
+            var data = {name, email, content, id_article, id_parent};
+            addComment(data);
             $(this).parents("li").children("ul").append(comment(name, content, true));
             $("input[name='name']").val("");  
             $("input[name='email']").val("");  
