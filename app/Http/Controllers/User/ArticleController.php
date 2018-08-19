@@ -36,7 +36,7 @@ class ArticleController extends Controller
         }
 
         $comments = Comment::getComments($article_content->id);
-        $count_comment = Comment::getCountComments($comments);
+        $count_comment = Comment::getCountCommentsWithChild($comments);
         return view('user.content_article', [
             'recentArticles' => $recentArticles,
             'popularArticles' => $popularArticles,

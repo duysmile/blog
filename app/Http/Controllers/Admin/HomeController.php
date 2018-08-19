@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Article;
+use App\Comment;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
@@ -31,7 +32,8 @@ class HomeController extends Controller
         else{
             $topUsers = [];
         }
-        return view('admin/home', compact(['user', 'time', 'topUsers', 'time_topUser']));
+        $articles = Article::getArticleWithCommentsInProgress();
+        return view('admin/home', compact(['user', 'time', 'topUsers', 'time_topUser', 'articles']));
     }
 
     public function logout(){

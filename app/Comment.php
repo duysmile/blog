@@ -29,18 +29,51 @@ class Comment extends Model
     public static function getComments($id_article) {
         $comments = Comment::whereNull('id_parent')
             ->where([
-                'id_article' => $id_article
+                'id_article' => $id_article,
+                'status' => 1
             ])
             ->with('child')
             ->orderBy('created_at', 'desc')
             ->get();
         return $comments;
     }
-    public static function getCountComments($comments) {
+
+    public static function getCountCommentsWithChild($comments) {
         $count = count($comments);
         foreach($comments as $comment){
             $count += count($comment->child);
         }
         return $count;
+    }
+    public static function getCountCommentsInProgress($id_article) {
+        $count = Comment::where([
+            'id_article' => $id_article,
+            'status' => 0
+        ])->count();
+        return $count;
+    }
+
+    public static function activeComment($request) {
+        $id_comment = json_decode($request, true)['comment'];
+        $comment = Comment::where([
+            'id' => $id_comment,
+            'status' => 0
+        ])->first();
+        if(!$comment) {
+            return false;
+        }
+        $comment->status = 1;
+        return $comment->save() ? true : false;
+    }
+
+    public static function deleteComment($request) {
+        $id_comment = json_decode($request, true)['comment'];
+        $comment = Comment::where([
+            'id' => $id_comment,
+        ])->first();
+        if(!$comment) {
+            return false;
+        }
+        return $comment->delete() ? true : false;
     }
 }

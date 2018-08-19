@@ -40,5 +40,7 @@ Route::prefix('')->group(function(){
     Route::get('/search', 'User\ListArticleController@search')->name('search');
     Route::get('/{category}/{article}', 'User\ArticleController@index')->name('content');
     Route::get('/{category}', 'User\ListArticleController@index')->name('list');
-    Route::resource('comments', 'User\CommentController');
+    Route::post('comments', 'User\CommentController@store')->name('comments.store');
+    Route::patch('/comments/active', 'User\CommentController@active')->name('active_comment');
+    Route::delete('/comments/delete', 'User\CommentController@delete')->name('delete_comment');
 });

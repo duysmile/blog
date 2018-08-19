@@ -7,6 +7,7 @@ use App\Http\Requests\StoreArticle;
 use App\Http\Requests\UpdateArticle;
 use Carbon\Carbon;
 use DateTime;
+use function foo\func;
 use http\Env\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -384,6 +385,24 @@ class Article extends Model
         }
         return $articles;
     }
+    public static function getArticleWithCommentsInProgress(){
+        $articles = Article::whereHas('comments', function ($q) {
+            $q->where(['status' => 0]);
+        })
+            ->with(['comments' => function($q) {
+                $q->where(['status'=>0])->orderBy('created_at', 'desc');
+            }])
+            ->with(['categories' => function($q) {
+                $q->select('id_category', 'name');
+            }])
+            ->orderBy('time_public', 'desc')
+            ->get(['title-en', 'title', 'id']);
+        foreach ($articles as $article) {
+            $article->count = Comment::getCountCommentsInProgress($article->id);
+        }
+        return $articles;
+    }
+
 
     public function author(){
         return $this->belongsTo('App\User', 'id_author', 'id');

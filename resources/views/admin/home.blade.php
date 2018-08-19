@@ -148,11 +148,117 @@
             </table>
         </div>
     </div>
+    <div class="row border-top mt-5 pt-5">
+        <div class="col-12">
+            <h3 class="text-primary">
+                ACTIVE COMMENT
+            </h3>
+
+            <div class="d-flex flex-column">
+                @foreach($articles as $article)
+                <h5 class="p-3 bg-warning">
+                    Title:
+                    <a href="{{ $app->make('url')
+                        ->to('/'. (isset($article->categories[0]) ? $article->categories[0]->name : 'no-category')
+                         . "/" . $article['title-en'])}}"
+                        target="_blank"
+                    >
+                        {{$article['title']}}</a>
+                    <span class="badge badge-pill badge-info">{{$article->count}}</span>
+                    <i class="fa fa-chevron-down" data-toggle="collapse" data-target="#group-{{$article->id}}"></i>
+                </h5>
+                <ul id="group-{{$article->id}}" class="collapse list-group mb-2">
+                    @foreach($article->comments as $comment)
+                        <li class="list-group-item d-flex justify-content-between">
+                            <div>
+                                <i class="fa fa-user text-success"></i>
+                                <span class="text-success">
+                                    &nbsp;{{$comment->name}}
+                                </span>
+                                <span class="d-block pl-3 text-primary">
+                                    <i class="fa fa-comments text-primary"></i>
+                                    &nbsp;{{$comment->content}}
+                                </span>
+                            </div>
+                            <div data-comment="{{$comment->id}}">
+                                <button class="btn btn-success btn-active">
+                                    Active
+                                </button>
+                                <button class="btn btn-danger btn-del">
+                                    Delete
+                                </button>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    <div class="row p-5 border-top mt-5">
+        <div class="col-12 text-center">
+            DASHBOARD by Duy Nguyen.
+        </div>
+    </div>
 <script>
     $(document).ready(function(){
        $('#time-top-user').on('change', function(){
-          $('#form-top-user').submit();
+           $('#form-top-user').submit();
        });
+       $(".btn-active").on('click', function () {
+           var instance = this;
+           if($(this).text().trim() == "Active") {
+               $.ajax({
+                   headers:{
+                       'X-CSRF-TOKEN': '{{csrf_token()}}'
+                   },
+                   url: '{{route('active_comment')}}',
+                   dataType: 'json',
+                   type: 'PATCH',
+                   contentType: 'application/json',
+                   data: JSON.stringify({
+                       'comment': $(this).parent().attr('data-comment')
+                   }),
+                   success: function(response) {
+                       $(instance).html("<i class='fa fa-check'></i>");
+                       $(instance).attr("disabled", "true");
+                   },
+                   error: function (error) {
+                       console.log(error);
+                   }
+               })
+           } else {
+
+           }
+       })
+        $(".btn-del").on('click', function () {
+            var instance = this;
+            if($(this).text().trim() == "Delete") {
+                $.ajax({
+                    headers:{
+                        'X-CSRF-TOKEN': '{{csrf_token()}}'
+                    },
+                    url: '{{route('delete_comment')}}',
+                    dataType: 'json',
+                    type: 'DELETE',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        'comment': $(this).parent().attr('data-comment')
+                    }),
+                    success: function(response) {
+                        $(instance).html("<i class='fa fa-trash'></i>");
+                        $(instance).attr("disabled", "true");
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+
+                })
+            } else {
+
+            }
+
+        })
     });
 </script>
 @endsection
