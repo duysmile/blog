@@ -17,6 +17,13 @@ h1 a:hover{
 .input-group-text{
     width: 100%;
 }
-.body__form--width{
-    width: 42%;
+@media (max-width: 758px) {
+    .body__form--width{
+        width: 90%;
+    }
+}
+@media (min-width: 758px){
+    .body__form--width{
+        width: 42%;
+    }
 }

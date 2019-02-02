@@ -24,49 +24,49 @@
         <div class="col-12">
             <ul class="bg-dark mt-3 p-2 d-flex flex-column">
                 <li class="d-flex text-center pb-2 text-light border-bottom">
-                    <div class="col-1">
+                    <div class="col-md-1 d-md-block d-none">
                         No.
                     </div>
-                    <div class="col-2">
+                    <div class="col-md-2 col-3">
                         Name
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 d-md-block d-none">
                         Email
                     </div>
-                    <div class="col-2">
+                    <div class="col-md-2 col-3">
                         Role
                     </div>
-                    <div class="col-2">
+                    <div class="col-md-2 col-3">
                         Status
                     </div>
-                    <div class="col-2">
+                    <div class="col-md-2 col-3">
                         Action
                     </div>
                 </li>
                 @foreach($users as $user)
                     <li class="d-flex align-items-center text-center text-light py-2">
-                        <div class="col-1">
+                        <div class="col-md-1 d-md-block d-none">
                             {{$loop->index + 1}}
                         </div>
-                        <div class="col-2">
+                        <div class="col-md-2 col-3">
                             {{$user->name}}
                         </div>
-                        <div class="col-3">
+                        <div class="col-md-3 d-md-block d-none">
                             {{$user->email}}
                         </div>
-                        <div class="col-2">
+                        <div class="col-md-2 col-3">
                             @foreach($user->roles as $role)
                                 {{$role->name}}
                             @endforeach
                         </div>
-                        <div class="col-2">
+                        <div class="col-md-2 col-3">
                             @if($user->status)
                                 <span class="bg-success p-1">Enable</span>
                             @else
                                 <span class="bg-danger p-1">Lock</span>
                             @endif
                         </div>
-                        <div class="col-2">
+                        <div class="col-md-2 col-3">
                             <a href="{{route('users.edit', $user->id)}}" class="btn btn-primary">
                                 <i class="fa fa-edit"></i>
                             </a>

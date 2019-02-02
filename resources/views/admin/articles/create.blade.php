@@ -17,7 +17,7 @@
         <form class="col-12" method="post" action="{{route('articles.store')}}" enctype="multipart/form-data">
             {{csrf_field()}}
             <div class="row">
-                <div class="col-9">
+                <div class="col-md-9 col-12">
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" required>
@@ -66,7 +66,7 @@
                         </script>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3 col-6 mb-2">
                     <div>
                         <label for="">
                             Choose Category
@@ -115,7 +115,7 @@
                         <label for="">
                             Thumbnail
                         </label>
-                        <input type="file" class="form-control-file" id="thumbnail" name="thumbnail" required>
+                        <input type="file" class="form-control-file" id="thumbnail" name="thumbnail">
 
                         <img src="" alt="" id="imgThumbnail" class="w-100 p-2 border mt-2 d-none">
                         {{--preview image--}}

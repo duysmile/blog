@@ -15,7 +15,8 @@ class CommentController extends Controller
         return $this->middleware(['auth']);
     }
     public function store(StoreComment $request) {
-        if ( Comment::create($request->getContent()) ) {
+        $comment = $request->getContent();
+        if ( Comment::create($comment) ) {
             return response()->json([
                 'status' => true
             ]);

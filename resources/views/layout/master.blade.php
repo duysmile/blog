@@ -12,6 +12,7 @@
     <link href='https://fonts.googleapis.com/css?family=Amaranth' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Aclonica' rel='stylesheet'>
     <link rel="stylesheet" href="{{asset('css/main.css')}}">
+    <link rel="icon" href="{{asset('images/logo_final.png')}}">
 
     <script src="{{asset('node_modules/jquery/dist/jquery.min.js')}}"></script>
     <script src="{{asset('node_modules/bootstrap/dist/js/bootstrap.min.js')}}"></script>

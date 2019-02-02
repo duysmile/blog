@@ -82,7 +82,6 @@ class ArticleController extends Controller
     public function store(StoreArticle $request)
     {
         $thumbnail = new StoreImage(['image' => $request->thumbnail]);
-
         if(Article::saveArticle($request)){
             return redirect('admin/articles')->with('success', 'Create successfully');
         }

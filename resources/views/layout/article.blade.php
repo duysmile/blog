@@ -12,11 +12,9 @@
             <i class="fa fa-eye"></i><b>&nbsp;{{$article->views}}</b>
         </small>
     </span>
-    <img src="{{$article->images[0]->url}}" alt="" class="w-100 mb-2">
+    <img src="{{asset($article->images[0]->url)}}" alt="" class="w-100 mb-2">
     <p class="text-justify">
-        <small>
-            {!! $article->content !!}
-        </small>
+        {!! $article->content !!}
     </p>
 </div>
 <div class="bg-white p-3 mt-2 main__container--box-shadow">
@@ -33,7 +31,7 @@
                         'category' => count($article_like->categories) ? $article_like->categories[0]->name : 'no-category',
                         'article' => $article_like['title-en']
                     ])}}">
-                        <img src="{{$article_like->images[0]->url}}" alt="" class="w-100 like__image--height">
+                        <img src="{{asset($article_like->images[0]->url)}}" alt="" class="w-100 like__image--height">
                         <span class="flip-item"></span>
                         <span class="flip-read-more">
                             <img src="{{asset('images/bookmark.png')}}" alt="">
@@ -159,12 +157,18 @@
 </div>
 
 <script>
+    function escapeHTML(str){
+        str = str + '';
+        return str.replace(/[\u00A0-\u9999<>&](?!#)/gim, function(i) {
+            return '&#' + i.charCodeAt(0) + ';';
+        });
+    }
     function comment(name, comment, child) {
         var image = '<div class="h-comment icon-avatar">' +
                         '<i class="fa fa-user"></i>' +
                     '</div>';
         var name = '<span class="text-primary">' +
-                        name +
+                        escapeHTML(name) +
                     '</span>' +
                     '<br>';
         var hint = '<small class="hint-text">' +
@@ -172,7 +176,7 @@
                     '</small>' +
                     '<br>';
         var content = '<span class="">' +
-                        comment +
+                        escapeHTML(comment) +
                     '</span>' +
                     '<br>';
         
@@ -304,10 +308,10 @@
         $(document).on('submit',"#post-comment", function(e) {
             e.preventDefault();
             
-            var name = $("input[name='name']").val();
-            var email = $("input[name='email']").val();
-            var content = $("input[name='comment']").val();
-            var id_article = {{$article->id}};
+            var name = escapeHTML($("input[name='name']").val());
+            var email = escapeHTML($("input[name='email']").val());
+            var content = escapeHTML($("input[name='comment']").val());
+            var id_article = escapeHTML({{$article->id}});
             var data = {name, email, content, id_article};
             addComment(data);
             $("#list-comment").append(comment(name, content, false));

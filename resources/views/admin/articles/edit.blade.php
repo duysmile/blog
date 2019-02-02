@@ -18,7 +18,7 @@
             {{csrf_field()}}
             <input type="hidden" name="_method" value="PUT">
             <div class="row">
-                <div class="col-9">
+                <div class="col-md-9 col-12">
                     <div class="form-group">
                         <label for="title">Title</label>
                         <input type="text" class="form-control" id="title" name="title" required value="{{$article->title}}">
@@ -67,7 +67,7 @@
                         </script>
                     </div>
                 </div>
-                <div class="col-3">
+                <div class="col-md-3 col-6 mb-2">
                     <div>
                         <label for="">
                             Choose Category
@@ -125,7 +125,7 @@
                         </label>
                         <input type="file" class="form-control-file" id="thumbnail" name="thumbnail">
 
-                        <img src="{{$article->images[0]->url}}" alt="" id="imgThumbnail" class="w-100 p-2 border mt-2">
+                        <img src="{{asset($article->images[0]->url)}}" alt="" id="imgThumbnail" class="w-100 p-2 border mt-2">
                         {{--preview image--}}
                         <script>
                             function readUrl(input){

@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="d-flex align-items-center justify-content-center">
-        <form class="p-3 m-3 w-50 bg-light" method="post" action="{{route('categories.store')}}">
+        <form class="p-3 m-3 w-md-50 w-100 bg-light" method="post" action="{{route('categories.store')}}">
             <div>
                 @if ($errors->any())
                     <div class="alert alert-danger">

@@ -26,7 +26,7 @@ class StoreArticle extends FormRequest
         return [
             'title' => 'bail|unique:articles,title,{id},id,deleted_at,NULL|required|string|max:256',
             'content' => 'required',
-            'thumbnail' => 'required',
+//            'thumbnail' => 'required',
             'time_public' => 'required',
         ];
     }

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="{{asset('css/main.css')}}">
     <link rel="stylesheet" href="{{asset('css/admin.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('node_modules/jquery-datetimepicker/build/jquery.datetimepicker.min.css')}}" >
+    <link rel="icon" href="{{asset('images/logo_final.png')}}">
 
     <script src="{{asset('node_modules/jquery/dist/jquery.min.js')}}"></script>
     <script src="{{asset('node_modules/chart.js/dist/Chart.min.js')}}"></script>

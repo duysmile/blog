@@ -29,64 +29,65 @@
                 <a id="applyStatus" class="btn btn-default bg-secondary text-light my-3 mx-2">
                     Apply status
                 </a>
-                <form action="{{route('articles.search')}}" class="form-inline my-3 mx-2" method="get">
-                    {{--<div class="input-group mr-1">--}}
-                    {{--<select name="category" class="form-control">--}}
-                    {{--<option value="" selected>--}}
-                    {{---Category---}}
-                    {{--</option>--}}
-                    {{--@foreach($categories as $category)--}}
-                    {{--<option value="{{$category->id}}">{{$category->name}}</option>--}}
-                    {{--@endforeach--}}
-                    {{--</select>--}}
-                    {{--</div>--}}
+                <form action="{{route('articles.search')}}" class="form-inline my-3 mx-2 d-md-block d-none" method="get">
                     <div class="input-group">
                         <input class="form-control border-right-0 border" name="query"
                                type="search" placeholder="Search" id="example-search-input">
                         <span class="input-group-append">
-                <button class="btn btn-outline-secondary border-left-0 border" type="submit">
-                    <i class="fa fa-search"></i>
-                </button>
-            </span>
+                            <button class="btn btn-outline-secondary border-left-0 border" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </span>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
 
+        <form action="{{route('articles.search')}}" class="col-12 d-md-none d-block form-inline mb-2" method="get">
+            <div class="input-group">
+                <input class="form-control border-right-0 border" name="query"
+                       type="search" placeholder="Search" id="example-search-input">
+                <span class="input-group-append">
+                        <button class="btn btn-outline-secondary border-left-0 border" type="submit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </span>
+            </div>
+        </form>
+    </div>
     <div class="row mb-4 border">
         <div class="col-12 px-0">
             <div class="d-flex flex-column">
                 <div class="bg-light p-2 border-bottom">
                     <div class="d-flex text-center">
-                        <div class="col-1">
+                        <div class="col-md-1 col-2 d-md-block d-none">
                             No.
                         </div>
-                        <div class="col-2">
+                        <div class="col-md-2 col-3">
                             Title
                         </div>
                         @if(Auth::user()->roles[0]->name == 'admin')
-                        <div class="col-1">
+                        <div class="col-md-1 col-3">
                             Author
                         </div>
-                        <div class="col-1">
+                        <div class="col-md-1 col-2">
                             Top
                         </div>
                         @else
-                        <div class="col-2">
+                        <div class="col-md-2 col-4">
                             Author
                         </div>
                         @endif
-                        <div class="col-2">
+                        <div class="col-md-2">
                             Status
                         </div>
-                        <div class="col-2">
+                        <div class="col-md-2 d-md-block d-none">
                             Categories
                         </div>
-                        <div class="col-2">
+                        <div class="col-md-2 d-md-block d-none">
                             Time Public
                         </div>
-                        <div class="col-1">
+                        <div class="col-md-1 col-2">
                             Action
                         </div>
                     </div>
@@ -94,17 +95,17 @@
                 <div class="pt-1 px-1">
                     @foreach($articles as $article)
                         <div class="d-flex text-center py-2 border-bottom">
-                            <div class="col-1 pt-1">
+                            <div class="col-md-1 col-2 pt-1 d-md-block d-none">
                                 {{$loop->index + 1}}
                             </div>
-                            <div class="col-2 pt-1">
+                            <div class="col-md-2 col-3 pt-1">
                                 {{$article->title}}
                             </div>
                             @if(Auth::user()->roles[0]->name == 'admin')
-                            <div class="col-1 pt-1">
+                            <div class="col-md-1 col-3 pt-1">
                                 {{$article->author}}
                             </div>
-                            <div class="col-1">
+                            <div class="col-md-1 col-2">
                                 <div class="pt-2">
                                     <label class="switch">
                                         <input type="checkbox" data-id="{{$article->id}}" name="top" value="true"
@@ -117,11 +118,11 @@
                                 </div>
                             </div>
                             @else
-                            <div class="col-2 pt-1">
+                            <div class="col-md-2 col-4">
                                 {{$article->author}}
                             </div>
                             @endif
-                            <div class="col-2">
+                            <div class="col-md-2">
                                 <select name="status" id="{{$article->id}}" class="form-control">
                                     @foreach($statuses as $status)
                                         @if($status->status_code == 2 && date(strtotime($article->time_public)) > time())
@@ -138,15 +139,15 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-2 pt-1">
+                            <div class="col-md-2 d-md-block d-none pt-1">
                                 @foreach($article->categories as $category)
                                     {{$category->name}} <br>
                                 @endforeach
                             </div>
-                            <div class="col-2 pt-1">
+                            <div class="col-md-2 d-md-block d-none pt-1">
                                 {{$article->time_public}}
                             </div>
-                            <div class="col-1 pt-1">
+                            <div class="col-md-1 col-2 pt-1">
                                 <a href="{{route('articles.edit', $article->id)}}">
                                     <i class="fa fa-edit"></i>
                                 </a>

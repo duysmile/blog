@@ -2,7 +2,7 @@
 @section('title', 'Create User')
 @section('content')
     <div class="d-flex align-items-center justify-content-center">
-        <div class="w-50 p-3 m-3 bg-light">
+        <div class="w-md-50 w-100 p-3 m-3 bg-light">
             <form action="{{route('users.store')}}" method="post">
                 <div>
                     @if ($errors->any())

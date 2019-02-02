@@ -37,7 +37,8 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     public static function getUsers(){
-        $users = User::where('verify', true)->where('id', '!=', Auth::user()->id)->select('id', 'name', 'email', 'status')->paginate(20);
+//        $users = User::where('verify', true)->where('id', '!=', Auth::user()->id)->select('id', 'name', 'email', 'status')->paginate(20);
+        $users = User::where('id', '!=', Auth::user()->id)->select('id', 'name', 'email', 'status')->paginate(20);
         return $users;
     }
 
@@ -72,17 +73,17 @@ class User extends Authenticatable implements JWTSubject
             'email' => $request['email'],
             'password'=> bcrypt($request['password']),
         ]);
-        VerifyUser::create([
-            'user_id' => $user->id,
-            'token' => str_random(40),
-        ]);
+//        VerifyUser::create([
+//            'user_id' => $user->id,
+//            'token' => str_random(40),
+//        ]);
         if(isset($request['role'])){
             $user->roles()->attach(Role::where('role_code', $request['role'])->first());
         }
         else{
             $user->roles()->attach(Role::where('name', 'editor')->first());
         }
-        Mail::to($user->email)->send(new VerifyMail($user));
+//        Mail::to($user->email)->send(new VerifyMail($user));
         return true;
     }
     public static function updateUser($id, $request){

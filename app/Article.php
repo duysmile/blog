@@ -145,7 +145,21 @@ class Article extends Model
             $image->save();
             $article->images()->attach(Image::where('id', $image->id)->get());
             return true;
+        } else {
+            dd("fail");
+            $image = new Image();
+            if ($article->id % 3 == 0) {
+                $image->url = "images/blue.jpg";
+            } else if ($article->id % 3 == 1){
+                $image->url = "images/green.jpg";
+            } else {
+                $image->url = "images/orange.jpg";
+            }
+            $image->save();
+            $article->images()->attach(Image::where('id', $image->id)->get());
+            return true;
         }
+
         return false;
     }
 
@@ -168,7 +182,7 @@ class Article extends Model
             $category_parent = Category::where('id', $request->only('category'))->first();
             $article->categories()->attach(Category::whereIn('id', [$category_parent->id, $category_parent->id_parent])->get());
         }
-
+//        dd($request->hasFile('thumbnail'));
         return Article::saveImageThumbnail($request, $article);
     }
 
@@ -189,6 +203,7 @@ class Article extends Model
         $article['id_status'] = 0;
         $article->save();
         $article->categories()->detach();
+        $article->images()->detach();
         if($request->only('category')){
             $category_parent = Category::where('id', $request->only('category'))->first();
             $article->categories()->attach(Category::whereIn('id', [$category_parent->id, $category_parent->id_parent])->get());
@@ -242,11 +257,12 @@ class Article extends Model
 
     public static function searchFullTextUser($request){
         $query = $request->only('query');
-
+        
         if($query['query'] == null){
             return Article::getArticles();
         }
-        $articles = Article::whereRaw('MATCH(title, content) AGAINST (? IN BOOLEAN MODE)', $query)
+        $query['query'] = htmlentities($query['query']);
+        $articles = Article::whereRaw('MATCH(title, content) AGAINST (? IN BOOLEAN MODE)', ['query' => $query])
             ->where('id_status', 2)
             ->paginate(self::$num_article_user['list_search']);
         foreach($articles as $article){

@@ -2,7 +2,7 @@
 @section('title', 'Home')
 @section('content')
     <div class="row pt-5">
-        <div class="col-8">
+        <div class="col-md-8 col-12">
             <canvas id="myChart"></canvas>
             <div class="text-center mt-2">
                 <h5 class="pt-1 text-center d-inline-block">
@@ -106,7 +106,7 @@
 
             </script>
         </div>
-        <div class="col-4">
+        <div class="col-md-4 col-12">
             <div class="mt-2">
                 <h5>
                     Top Users of
