@@ -33,7 +33,13 @@ class HomeController extends Controller
             $topUsers = [];
         }
         $articles = Article::getArticleWithCommentsInProgress();
-        return view('admin/home', compact(['user', 'time', 'topUsers', 'time_topUser', 'articles']));
+        return view('admin/home', [
+            'user' => $user, 
+            'time' => $time, 
+            'topUsers' => $topUsers, 
+            'time_topUser' => $time_topUser, 
+            'articles' => $articles
+            ]);
     }
 
     public function logout(){
