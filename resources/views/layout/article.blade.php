@@ -69,12 +69,11 @@
                         <span class="text-primary">
                             {{ $comment->name }}
                         </span>
-                                    <br>
-                                    <span>
-                            {{ $comment->content }}
+                            <br>
+                            <?php echo $comment->content ?>
                         </span>
-                                    <br>
-                                    <span class="text-primary">
+                            <br>
+                        <span class="text-primary">
                             <a href="" class="text-primary">
                                 <i class="fa fa-thumbs-up mr-1">&nbsp;Like</i>
                             </a>
@@ -99,7 +98,7 @@
                                     </span>
                                                 <br>
                                                 <span>
-                                        {{ $child->content }}
+                                        {!! $child->content !!}
                                     </span>
                                                 <br>
                                                 <span class="text-primary">
@@ -129,7 +128,7 @@
             </div>
             <div class="d-flex">
                 <div class="form-group w-100">
-                    <input id="comment" type="text" class="form-control w-100" 
+                    <input id="comment" type="text" class="form-control w-100"
                     placeholder="Comment" name="comment">
                 </div>
             </div>
@@ -139,13 +138,13 @@
                         <i class="fa fa-user"></i>
                     </div>
                     <div class="w-100">
-                        <input name="email" type="email" placeholder="Email(required)" 
+                        <input name="email" type="email" placeholder="Email(required)"
                             class="form-control mb-2" required>
-                        <input name="name" type="text" placeholder="Name(required)" 
+                        <input name="name" type="text" placeholder="Name(required)"
                             class="form-control mb-2" required>
                     </div>
                 </div>
-                
+
                 <div class="text-right">
                     <button class="btn btn-primary">
                         Post
@@ -158,10 +157,11 @@
 
 <script>
     function escapeHTML(str){
-        str = str + '';
-        return str.replace(/[\u00A0-\u9999<>&](?!#)/gim, function(i) {
-            return '&#' + i.charCodeAt(0) + ';';
-        });
+        // str = str + '';
+        // return str.replace(/[\u00A0-\u9999<>&](?!#)/gim, function(i) {
+        //     return '&#' + i.charCodeAt(0) + ';';
+        // });
+        return str;
     }
     function comment(name, comment, child) {
         var image = '<div class="h-comment icon-avatar">' +
@@ -179,7 +179,7 @@
                         escapeHTML(comment) +
                     '</span>' +
                     '<br>';
-        
+
         if(child){
             var button = '<span class="text-primary">' +
                         '<a href="" class="text-primary">' +
@@ -190,8 +190,8 @@
                         '<div class="d-flex w-100">' +
                             image +
                             '<div class="w-100">' +
-                                '<p>' + 
-                                    name + hint + 
+                                '<p>' +
+                                    name + hint +
                                     content +
                                     button +
                                 '</p>' +
@@ -212,15 +212,15 @@
                         '<div class="d-flex w-100">' +
                             image +
                             '<div class="w-100">' +
-                                '<p>' + 
-                                    name + hint + 
+                                '<p>' +
+                                    name + hint +
                                     content +
                                     button +
                                 '</p>' +
                             '</div>' +
                         '</div>' +
                         '<ul>' +
-                        '</ul>' +  
+                        '</ul>' +
                     '</li>';
         }
         return comment;
@@ -232,7 +232,7 @@
         var box ='<div class="row mb-3" id="comment-box-child">' +
                     '<form action="" class="w-100" id="post-comment-child">' +
                         '<div class="d-flex">' +
-                            '<p>' + 
+                            '<p>' +
                                 'LEAVE A COMMENT' +
                             '</p>' +
                             '<div class="ml-auto">' +
@@ -260,7 +260,7 @@
                                         'class="form-control mb-2" required>' +
                                 '</div>' +
                             '</div>' +
-                            
+
                             '<div class="text-right">' +
                                 '<button class="btn btn-primary">' +
                                     'Post' +
@@ -307,7 +307,7 @@
         })
         $(document).on('submit',"#post-comment", function(e) {
             e.preventDefault();
-            
+
             var name = escapeHTML($("input[name='name']").val());
             var email = escapeHTML($("input[name='email']").val());
             var content = escapeHTML($("input[name='comment']").val());
@@ -315,9 +315,9 @@
             var data = {name, email, content, id_article};
             addComment(data);
             $("#list-comment").append(comment(name, content, false));
-            $("input[name='name']").val("");  
-            $("input[name='email']").val("");  
-            $("input[name='comment']").val("");  
+            $("input[name='name']").val("");
+            $("input[name='email']").val("");
+            $("input[name='comment']").val("");
         })
 
         $(document).on('submit',"#post-comment-child", function(e) {
@@ -330,9 +330,9 @@
             var data = {name, email, content, id_article, id_parent};
             addComment(data);
             $(this).parents("li").children("ul").append(comment(name, content, true));
-            $("input[name='name']").val("");  
-            $("input[name='email']").val("");  
-            $("input[name='comment']").val("");  
+            $("input[name='name']").val("");
+            $("input[name='email']").val("");
+            $("input[name='comment']").val("");
         })
     })
 </script>

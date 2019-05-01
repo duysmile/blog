@@ -14,8 +14,10 @@ class Comment extends Model
         $comment = new Comment();
         $comment->name = $request->name;
         $comment->email = $request->email;
-        $comment->content = htmlentities($request->content);
+//        $comment->content = htmlentities($request->content);
+        $comment->content = $request->content;
         $comment->id_article = $request->id_article;
+        $comment->status = 1;
         if(isset($request->id_parent)) {
             $comment->id_parent = $request->id_parent;
         }

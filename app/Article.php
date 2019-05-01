@@ -32,22 +32,18 @@ class Article extends Model
         'list_like' => 3,
     ];
 
-    private static function getSummary($content){
-        $summary = preg_replace("/<[^>]*>/","", $content);
-        preg_match_all('/\./', $summary,$matches, PREG_OFFSET_CAPTURE);
-        if(count($matches[0]) > 1){
-            $endpoint = $matches[0][1][0] + 1; //get second dot in paragraph
-        }
-        else{
-            $endpoint = strlen($summary);
-        }
+    private static function getSummary($content)
+    {
+        $summary = preg_replace("/<[^>]*>/", "", $content);
+
+        $endpoint = 100;
         $summary = substr($summary, 0, $endpoint) . "...";
         return $summary;
     }
 
     public static function getAuthor($articles)
     {
-        foreach ($articles as $article){
+        foreach ($articles as $article) {
             $article['author'] = $article->author->name;
             $article['status'] = $article->status->name;
         }
@@ -57,13 +53,14 @@ class Article extends Model
     public static function getCategories($article)
     {
         $categories = [];
-        foreach($article->categories as $category){
+        foreach ($article->categories as $category) {
             $categories[] = $category->name;
         }
         return $categories;
     }
 
-    public static function getArticles(){
+    public static function getArticles()
+    {
         $articles = Article::latest()->paginate(20);
         $articles = self::getAuthor($articles);
         return $articles;
@@ -91,7 +88,7 @@ class Article extends Model
     public static function getPublicArticles()
     {
         $articles = Article::where([
-          'id_status' => 2,
+            'id_status' => 2,
         ])
             ->latest()
             ->paginate(self::$num_article_user['home_list']);
@@ -127,8 +124,9 @@ class Article extends Model
         return $articles;
     }
 
-    public static function saveImageThumbnail($request, $article){
-        if($request->hasFile('thumbnail')){
+    public static function saveImageThumbnail($request, $article)
+    {
+        if ($request->hasFile('thumbnail')) {
             $fileExtension = $request->thumbnail->getClientOriginalExtension();
 
             $fileName = 'thumbnail_' . $article->id . "_" . time() . '.' . $fileExtension;
@@ -141,7 +139,7 @@ class Article extends Model
             list($width, $height) = getimagesize($image_name);
 
             $image = new Image();
-            $image->url= Cloudder::show(Cloudder::getPublicId(), ["width" => $width, "height"=>$height]);
+            $image->url = Cloudder::show(Cloudder::getPublicId(), ["width" => $width, "height" => $height]);
             $image->save();
             $article->images()->attach(Image::where('id', $image->id)->get());
             return true;
@@ -150,7 +148,7 @@ class Article extends Model
             $image = new Image();
             if ($article->id % 3 == 0) {
                 $image->url = "images/blue.jpg";
-            } else if ($article->id % 3 == 1){
+            } else if ($article->id % 3 == 1) {
                 $image->url = "images/green.jpg";
             } else {
                 $image->url = "images/orange.jpg";
@@ -163,22 +161,22 @@ class Article extends Model
         return false;
     }
 
-    public static function saveArticle(StoreArticle $request){
+    public static function saveArticle(StoreArticle $request)
+    {
         $article = new Article();
-        foreach ($request->only('title', 'content') as $key => $value){
+        foreach ($request->only('title', 'content') as $key => $value) {
             $article[$key] = $value;
         }
         $article['title-en'] = str_slug($request['title']);
         $article['id_author'] = Auth::user()->id;
         $article['summary'] = Article::getSummary($request['content']);
-        if($date = DateTime::createFromFormat('H:i d.m.Y', $request['time_public'])){
+        if ($date = DateTime::createFromFormat('H:i d.m.Y', $request['time_public'])) {
             $article['time_public'] = $date->format('Y-m-d H:i:s');
-        }
-        else{
+        } else {
             return false;
         }
         $article->save();
-        if($request->only('category')){
+        if ($request->only('category')) {
             $category_parent = Category::where('id', $request->only('category'))->first();
             $article->categories()->attach(Category::whereIn('id', [$category_parent->id, $category_parent->id_parent])->get());
         }
@@ -186,141 +184,152 @@ class Article extends Model
         return Article::saveImageThumbnail($request, $article);
     }
 
-    public static function updateArticle($id, UpdateArticle $request){
+    public static function updateArticle($id, UpdateArticle $request)
+    {
         $article = Article::where([
             'id' => $id,
         ])->first();
-        foreach ($request->only('title', 'content','status') as $key => $value){
+        foreach ($request->only('title', 'content', 'status') as $key => $value) {
             $article[$key] = $value;
         }
         $article['summary'] = Article::getSummary($request['content']);
-        if($date = DateTime::createFromFormat('H:i d.m.Y', $request['time_public'])){
+        if ($date = DateTime::createFromFormat('H:i d.m.Y', $request['time_public'])) {
             $article['time_public'] = $date->format('Y-m-d H:i:s');
-        }
-        else{
+        } else {
             return false;
         }
         $article['id_status'] = 0;
         $article->save();
         $article->categories()->detach();
         $article->images()->detach();
-        if($request->only('category')){
+        if ($request->only('category')) {
             $category_parent = Category::where('id', $request->only('category'))->first();
             $article->categories()->attach(Category::whereIn('id', [$category_parent->id, $category_parent->id_parent])->get());
         }
         Article::saveImageThumbnail($request, $article);
         return true;
     }
-    public static function updateArticleStatus($request){
+
+    public static function updateArticleStatus($request)
+    {
         $request = json_decode($request, true);
-        foreach ($request as $id => $status){
+        foreach ($request as $id => $status) {
             $article = Article::where(['id' => $id])->first();
             $article['id_status'] = $status;
             $article->save();
         }
         return true;
     }
-    public static function updateArticleStatusDaily(){
+
+    public static function updateArticleStatusDaily()
+    {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         $articles = Article::where([
             'id_status' => 1,
         ])->get();
-        foreach($articles as $article){
-            if(strtotime($article['time_public']) <= time()) {
+        foreach ($articles as $article) {
+            if (strtotime($article['time_public']) <= time()) {
                 $article['id_status'] = 2;
                 $article->save();
             }
         }
         return $articles ? true : false;
     }
-    public static function updateArticleTop($request){
+
+    public static function updateArticleTop($request)
+    {
         $request = json_decode($request, true);
         $article = Article::where(['id' => $request['id']])->first();
         $article->top = !$article->top;
         return $article->save() ? true : false;
     }
 
-    public static function searchFullText($request){
+    public static function searchFullText($request)
+    {
         $query = $request->only('query');
 
-        if($query['query'] == null){
+        if ($query['query'] == null) {
             return Article::getArticles();
         }
         $articles = Article::whereRaw('MATCH(title, content) AGAINST (? IN BOOLEAN MODE)', $query)
             ->paginate(20);
-        foreach($articles as $article){
+        foreach ($articles as $article) {
             $article['author'] = $article->author->name;
             $article['status'] = $article->status->name;
         }
         return $articles;
     }
 
-    public static function searchFullTextUser($request){
+    public static function searchFullTextUser($request)
+    {
         $query = $request->only('query');
-        
-        if($query['query'] == null){
+
+        if ($query['query'] == null) {
             return Article::getArticles();
         }
         $query['query'] = htmlentities($query['query']);
         $articles = Article::whereRaw('MATCH(title, content) AGAINST (? IN BOOLEAN MODE)', ['query' => $query])
             ->where('id_status', 2)
             ->paginate(self::$num_article_user['list_search']);
-        foreach($articles as $article){
+        foreach ($articles as $article) {
             $article['author'] = $article->author->name;
             $article['status'] = $article->status->name;
         }
         return $articles;
     }
 
-    public static function searchFullTextForAuthor($request, $id){
+    public static function searchFullTextForAuthor($request, $id)
+    {
         $query = $request->only('query');
 
-        if($query['query'] == null){
+        if ($query['query'] == null) {
             return Article::getArticles();
         }
         $articles = Article::whereRaw('MATCH(title, content) AGAINST (? IN BOOLEAN MODE)', $query)
             ->where('id_author', $id)
             ->paginate(20);
-        foreach($articles as $article){
+        foreach ($articles as $article) {
             $article['author'] = $article->author->name;
             $article['status'] = $article->status->name;
         }
         return $articles;
     }
 
-    public static function getArticleContent($article){
+    public static function getArticleContent($article)
+    {
         $article_content = Article::where([
             'title-en' => $article,
             'id_status' => 2,
         ])->first();
-        if($article_content){
+        if ($article_content) {
             $article_content['views'] += 1;
-        }
-        else{
+        } else {
             return false;
         }
         return $article_content->save() ? $article_content : [];
     }
 
-    public static function getTimePublic(){
+    public static function getTimePublic()
+    {
         $time_public = Article::selectRaw('date_format(time_public, \'%m-%Y\') as date')
             ->distinct()
             ->where([
                 'id_status' => 2,
             ])
             ->get(['date']);
-        foreach ($time_public as $time){
+        foreach ($time_public as $time) {
             $time->value = $time->date;
             $time->date = Carbon::parse('01-' . $time->date)->format('F, Y');
         }
         return $time_public;
     }
 
-    public static function getArticleByTime($time){
-        $time = strtotime('1-'.$time);
+    public static function getArticleByTime($time)
+    {
+        $time = strtotime('1-' . $time);
         $articles = Article::where([
-                'id_status' => 2,
-            ])
+            'id_status' => 2,
+        ])
             ->whereMonth('time_public', date('m', $time))
             ->whereYear('time_public', date('Y', $time))
             ->paginate(self::$num_article_user['list_archie']);
@@ -328,8 +337,9 @@ class Article extends Model
         return $articles;
     }
 
-    public static function getViewsOfMonth($time){
-        $time = strtotime('1-'.$time);
+    public static function getViewsOfMonth($time)
+    {
+        $time = strtotime('1-' . $time);
         $views = Article::where([
             'id_status' => 2,
         ])
@@ -339,8 +349,9 @@ class Article extends Model
         return $views;
     }
 
-    public static function getSumOfArticlesOfMonth($time){
-        $time = strtotime('1-'.$time);
+    public static function getSumOfArticlesOfMonth($time)
+    {
+        $time = strtotime('1-' . $time);
         $sum_articles = Article::where([
             'id_status' => 2,
         ])
@@ -350,16 +361,16 @@ class Article extends Model
         return $sum_articles;
     }
 
-    public static function getArticleLike($category_content, $article){
-        if($article == null){
+    public static function getArticleLike($category_content, $article)
+    {
+        if ($article == null) {
             $list_article = Article::where([
                 'id_status' => 2,
             ])
                 ->limit(self::$num_article_user['list_like'])
                 ->orderBy('time_public', 'desc')
                 ->get();
-        }
-        else {
+        } else {
             $category = Category::where([
                 'name' => $category_content,
             ])->first();
@@ -392,7 +403,7 @@ class Article extends Model
             'name' => $category,
         ])->first();
         $articles = [];
-        if($category){
+        if ($category) {
             $articles = $category->articles()
                 ->where('id_status', 2)
                 ->orderBy('time_public', 'desc')
@@ -401,14 +412,16 @@ class Article extends Model
         }
         return $articles;
     }
-    public static function getArticleWithCommentsInProgress(){
+
+    public static function getArticleWithCommentsInProgress()
+    {
         $articles = Article::whereHas('comments', function ($q) {
             $q->where(['status' => 0]);
         })
-            ->with(['comments' => function($q) {
-                $q->where(['status'=>0])->orderBy('created_at', 'desc');
+            ->with(['comments' => function ($q) {
+                $q->where(['status' => 0])->orderBy('created_at', 'desc');
             }])
-            ->with(['categories' => function($q) {
+            ->with(['categories' => function ($q) {
                 $q->select('id_category', 'name');
             }])
             ->orderBy('time_public', 'desc')
@@ -420,19 +433,28 @@ class Article extends Model
     }
 
 
-    public function author(){
+    public function author()
+    {
         return $this->belongsTo('App\User', 'id_author', 'id');
     }
-    public function categories(){
+
+    public function categories()
+    {
         return $this->belongsToMany('App\Category', 'article_category', 'id_article', 'id_category');
     }
-    public function images(){
+
+    public function images()
+    {
         return $this->belongsToMany('App\Image', 'article_image', 'id_article', 'id_image');
     }
-    public function status(){
+
+    public function status()
+    {
         return $this->hasOne('App\ArticleStatus', 'status_code', 'id_status');
     }
-    public function comments(){
+
+    public function comments()
+    {
         return $this->hasMany('App\Comment', 'id_article', 'id');
     }
 }

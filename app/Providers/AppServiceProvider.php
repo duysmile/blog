@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -17,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
         //share data to all view here
         //View::share('data', 'value');
         //can use $data in all views
+        Schema::defaultStringLength(191);
     }
 
     /**

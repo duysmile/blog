@@ -41,6 +41,7 @@ class ListArticleController extends Controller
             'articles' => $articles,
             'categories' => $categories,
             'time_public' => $time_public,
+            'keyword' => $query->only('query')['query']
         ]);
     }
 
