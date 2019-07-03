@@ -1,6 +1,3 @@
-<div class="d-flex p-2 mb-2 bg-dark text-white">
-    RESULTS FOR: <?php echo $keyword ?>
-</div>
 <div class="d-flex flex-column">
     @if(!count($articles))
         <div class="alert alert-default bg-white main__container--box-shadow">
