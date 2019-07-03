@@ -14,7 +14,7 @@
                         'category' => count($topArticles[0]->categories) ? $topArticles[0]->categories[0]->name : 'no-category',
                         'article' => $topArticles[0]['title-en']
                     ])}}">
-                        <img src="{{$topArticles[0]->images[0]->url}}" alt="" class="w-100">
+                        <img src="{{count($topArticles[0]->images) ? (count($topArticles[0]->images) ? $topArticles[0]->images[0]->url : asset('images/blue.jpg')) : asset('images/green.jpg')}}" alt="" class="w-100">
                         <span class="flip-item"></span>
                         <span class="flip-read-more">
                             <img src="{{asset('images/bookmark.png')}}" alt="">
@@ -58,7 +58,7 @@
                                                             'category' => count($topArticle->categories) ? $topArticle->categories[0]->name : 'no-category',
                                                             'article' => $topArticle['title-en']
                                                         ])}}">
-                                        <img src="{{$topArticle->images[0]->url}}" alt="" class="w-100">
+                                        <img src="{{count($topArticle->images) ? (count($topArticle->images) ? $topArticle->images[0]->url : asset('images/blue.jpg')) : asset('images/orange.jpg')}}" alt="" class="w-100">
                                         <span class="flip-item"></span>
                                         <span class="flip-read-more">
                                                                 <img src="{{asset('images/bookmark.png')}}" alt="">
@@ -117,7 +117,7 @@
                                                                 'category' => count($article->categories) > 0 ? $article->categories[0]->name : 'no-category',
                                                                 'article' => $article['title-en']
                                                             ])}}">
-                                            <img src="{{$article->images[0]->url}}" alt=""
+                                            <img src="{{count($article->images) ? (count($article->images) ? $article->images[0]->url : asset('images/blue.jpg')) : asset('images/blue.jpg')}}" alt=""
                                                  class="w-100 main__image--height flip">
                                             <span class="flip-item"></span>
                                             <span class="flip-read-more">

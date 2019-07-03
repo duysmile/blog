@@ -13,11 +13,11 @@
                                             'category' => count($recentArticle->categories) ? $recentArticle->categories[0]->name : 'no-category',
                                             'article' => $recentArticle['title-en']
                                         ])}}">
-                            <img src="{{$recentArticle->images[0]->url}}" alt="" class="w-100">
+                            <img src="{{count($recentArticle->images) ? (count($recentArticle->images) ? $recentArticle->images[0]->url : asset('images/blue.jpg')) : asset('images/blue.jpg')}}" alt="" class="w-100">
                             <span class="flip-item"></span>
                             <span class="flip-read-more">
-                                                <img src="{{asset('images/bookmark.png')}}" alt="">
-                                            </span>
+                                <img src="{{asset('images/bookmark.png')}}" alt="">
+                            </span>
                         </a>
                     </div>
                     <div>
@@ -64,7 +64,7 @@
                                             'category' => count($popularArticle->categories) ? $popularArticle->categories[0]->name : 'no-category',
                                             'article' => $popularArticle['title-en']
                                         ])}}">
-                            <img src="{{$popularArticle->images[0]->url}}" alt="" class="w-100">
+                            <img src="{{count($popularArticle->images) ? $popularArticle->images[0]->url : asset('images/blue.jpg')}}" alt="" class="w-100">
                             <span class="flip-item"></span>
                             <span class="flip-read-more">
                                                 <img src="{{asset('images/bookmark.png')}}" alt="">

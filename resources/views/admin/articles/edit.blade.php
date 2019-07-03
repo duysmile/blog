@@ -125,7 +125,7 @@
                         </label>
                         <input type="file" class="form-control-file" id="thumbnail" name="thumbnail">
 
-                        <img src="{{asset($article->images[0]->url)}}" alt="" id="imgThumbnail" class="w-100 p-2 border mt-2">
+                        <img src="{{count($article->images) ? $article->images[0]->url : asset('images/blue.jpg')}}" alt="" id="imgThumbnail" class="w-100 p-2 border mt-2">
                         {{--preview image--}}
                         <script>
                             function readUrl(input){

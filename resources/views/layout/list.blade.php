@@ -16,7 +16,7 @@
                         'category' => count($article->categories) > 0 ? $article->categories[0]->name : 'no-category',
                         'article' => $article['title-en']
                     ])}}">
-                        <img src="{{$article->images[0]->url}}" alt="" class="w-100">
+                        <img src="{{count($article->images) ? $article->images[0]->url : asset('images/blue.jpg')}}" alt="" class="w-100">
                         <span class="flip-item"></span>
                         <span class="flip-read-more">
                             <img src="{{asset('images/bookmark.png')}}" alt="">

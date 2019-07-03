@@ -2,18 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="032e1d45-e88e-4c83-8f22-9ea44f4577b9" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/Http/Middleware/Cors.php" />
-      <change beforePath="$PROJECT_DIR$/.env" afterPath="$PROJECT_DIR$/.env" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/Article.php" afterPath="$PROJECT_DIR$/app/Article.php" />
-      <change beforePath="$PROJECT_DIR$/app/Comment.php" afterPath="$PROJECT_DIR$/app/Comment.php" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/User/ListArticleController.php" afterPath="$PROJECT_DIR$/app/Http/Controllers/User/ListArticleController.php" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Kernel.php" afterPath="$PROJECT_DIR$/app/Http/Kernel.php" />
-      <change beforePath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" afterPath="$PROJECT_DIR$/app/Providers/AppServiceProvider.php" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layout/article.blade.php" afterPath="$PROJECT_DIR$/resources/views/layout/article.blade.php" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layout/list.blade.php" afterPath="$PROJECT_DIR$/resources/views/layout/list.blade.php" />
-      <change beforePath="$PROJECT_DIR$/resources/views/layout/main.blade.php" afterPath="$PROJECT_DIR$/resources/views/layout/main.blade.php" />
-      <change beforePath="$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Cookie/CookieJar.php" afterPath="$PROJECT_DIR$/vendor/laravel/framework/src/Illuminate/Cookie/CookieJar.php" />
     </list>
     <ignored path="$PROJECT_DIR$/../laravel-heroku/vendor/composer/" />
     <ignored path="$PROJECT_DIR$/../laravel-heroku/vendor/dnoegel/php-xdg-base-dir/" />
@@ -662,12 +651,20 @@
       <workItem from="1551544717552" duration="8403000" />
       <workItem from="1552533981996" duration="371000" />
       <workItem from="1556376568082" duration="791000" />
-      <workItem from="1556681953001" duration="389000" />
+      <workItem from="1556681953001" duration="1003000" />
     </task>
+    <task id="LOCAL-00001" summary="1/5/2019: update source code for demo xss">
+      <created>1556682384883</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1556682384883</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="63108000" />
+    <option name="totallyTimeSpent" value="63722000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
