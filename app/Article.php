@@ -164,12 +164,12 @@ class Article extends Model
     public static function saveArticle(StoreArticle $request)
     {
         $article = new Article();
-        foreach ($request->only('title', 'content') as $key => $value) {
+        foreach ($request->only('title', 'content', 'summary') as $key => $value) {
             $article[$key] = $value;
         }
         $article['title-en'] = str_slug($request['title']);
         $article['id_author'] = Auth::user()->id;
-        $article['summary'] = Article::getSummary($request['content']);
+        // $article['summary'] = Article::getSummary($request['content']);
         if ($date = DateTime::createFromFormat('H:i d.m.Y', $request['time_public'])) {
             $article['time_public'] = $date->format('Y-m-d H:i:s');
         } else {

@@ -25,6 +25,12 @@
                     <script src="{{asset('node_modules/tinymce/tinymce.min.js')}}">
                     </script>
                     <div class="form-group">
+                        <label for="summary">Summary:</label>
+                        <textarea rows="7" class="form-control" id="summary" name="summary" required>
+                            {{ old('summary') }}
+                        </textarea>
+                    </div>
+                    <div class="form-group">
                         <label for="content">Content:</label>
                         <textarea rows="7" class="form-control" id="content" name="content" required>
                             {{ old('content') }}
