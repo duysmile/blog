@@ -22,14 +22,12 @@
                         <label for="title">Title</label>
                         <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}" required>
                     </div>
-                    <script src="{{asset('node_modules/tinymce/tinymce.min.js')}}">
-                    </script>
                     <div class="form-group">
                         <label for="summary">Summary:</label>
-                        <textarea rows="7" class="form-control" id="summary" name="summary" required>
-                            {{ old('summary') }}
-                        </textarea>
+                        <input type="text" class="form-control" id="summary" name="summary" value="{{ old('summary') }}" required>
                     </div>
+                    <script src="{{asset('node_modules/tinymce/tinymce.min.js')}}">
+                    </script>
                     <div class="form-group">
                         <label for="content">Content:</label>
                         <textarea rows="7" class="form-control" id="content" name="content" required>
