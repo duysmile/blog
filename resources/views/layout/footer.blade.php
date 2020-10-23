@@ -22,9 +22,4 @@
 
     </div>
 </footer>
-<script>
-window['CboxReady'] = function (Cbox) {
-	Cbox('button', '6-848660-zbFiKx');
-}
-</script>
-<script src="https://static.cbox.ws/embed/1.js" async></script>
+<iframe src="https://www6.cbox.ws/box/?boxid=848660&boxtag=zbFiKx" width="100%" height="450" allowtransparency="yes" allow="autoplay" frameborder="0" marginheight="0" marginwidth="0" scrolling="auto"></iframe>
